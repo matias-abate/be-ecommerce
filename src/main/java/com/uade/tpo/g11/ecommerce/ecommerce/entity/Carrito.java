@@ -1,4 +1,5 @@
 package com.uade.tpo.g11.ecommerce.ecommerce.entity;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -7,26 +8,20 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
-
 @Entity
 @Table(name = "carrito")
 public class Carrito {
+
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.IDENTITY
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     @ManyToOne
-    @JoinColumn(
-            name = "usuarioId",
-            nullable = false
-    )
+    @JoinColumn(name = "usuarioId", nullable = false)
     private Usuario usuario;
+
     @ManyToOne
-    @JoinColumn(
-            name = "productoId",
-            nullable = false
-    )
+    @JoinColumn(name = "productoId", nullable = false)
     private Producto producto;
 
     public Carrito() {
