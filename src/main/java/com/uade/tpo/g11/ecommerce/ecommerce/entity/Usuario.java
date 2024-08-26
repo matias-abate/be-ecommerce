@@ -1,60 +1,45 @@
 package com.uade.tpo.g11.ecommerce.ecommerce.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import com.uade.tpo.g11.ecommerce.ecommerce.enums.RolesUsuario;
+import jakarta.persistence.*;
+
 import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(
-        name = "usuario"
-)
+@Table(name = "usuario")
 public class Usuario {
+
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.IDENTITY
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(
-            name = "nombre_usuario",
-            nullable = false,
-            unique = true
-    )
+
+    @Column(name = "nombre_usuario", nullable = false, unique = true)
     private String nombreUsuario;
-    @Column(
-            nullable = false,
-            unique = true
-    )
+
+    @Column(nullable = false, unique = true)
     private String email;
-    @Column(
-            nullable = false
-    )
+
+    @Column(nullable = false)
     private String contraseña;
-    @Column(
-            name = "fecha_nacimiento",
-            nullable = false
-    )
+
+    @Column(name = "fecha_nacimiento", nullable = false)
     private Date fechaNacimiento;
-    @Column(
-            nullable = false
-    )
+
+    @Column(nullable = false)
     private String nombre;
-    @Column(
-            nullable = false
-    )
+
+    @Column(nullable = false)
     private String apellido;
-    @OneToMany(
-            mappedBy = "usuario"
-    )
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
+    private RolesUsuario rolesEnum;
+
+    @OneToMany(mappedBy = "usuario")
     private List<Carrito> carritos;
-    @OneToMany(
-            mappedBy = "usuario"
-    )
+
+    @OneToMany(mappedBy = "usuario")
     private List<Favorito> favoritos;
 
     public Usuario() {
@@ -114,5 +99,29 @@ public class Usuario {
 
     public void setApellido(String apellido) {
         this.apellido = apellido;
+    }
+
+    public List<Carrito> getCarritos() {
+        return carritos;
+    }
+
+    public void setCarritos(List<Carrito> carritos) {
+        this.carritos = carritos;
+    }
+
+    public List<Favorito> getFavoritos() {
+        return favoritos;
+    }
+
+    public void setFavoritos(List<Favorito> favoritos) {
+        this.favoritos = favoritos;
+    }
+
+    public RolesUsuario getRolesEnum() {
+        return rolesEnum;
+    }
+
+    public void setRolesEnum(RolesUsuario rolesEnum) {
+        this.rolesEnum = rolesEnum;
     }
 }
