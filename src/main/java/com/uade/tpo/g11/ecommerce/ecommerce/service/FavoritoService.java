@@ -3,7 +3,6 @@ package com.uade.tpo.g11.ecommerce.ecommerce.service;
 import com.uade.tpo.g11.ecommerce.ecommerce.entity.Favorito;
 import com.uade.tpo.g11.ecommerce.ecommerce.entity.Producto;
 import com.uade.tpo.g11.ecommerce.ecommerce.entity.Usuario;
-import com.uade.tpo.g11.ecommerce.ecommerce.repository.FavoritoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
