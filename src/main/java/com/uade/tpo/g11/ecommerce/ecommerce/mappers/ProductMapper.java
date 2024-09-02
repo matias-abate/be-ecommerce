@@ -42,8 +42,21 @@ public class ProductMapper {
 
     public ProductEntity toEntity(ProductDTO productDTO) {
 
-        
+            ProductEntity productEntity = new ProductEntity();
 
+            productEntity.setProductId(productDTO.getId());
+            productEntity.setName(productDTO.getName());
+            productEntity.setDescription(productDTO.getDescription());
+            productEntity.setPrice(productDTO.getPrice());
+            productEntity.setCategory(productDTO.getCategory());
+            productEntity.setStock(productDTO.getStock());
+            productEntity.setImages(productDTO.getImages());
+
+            List<OrderDetailEntity> orderDetailEntities = productDTO.getOrderDetails().stream()
+                    .map(orderDetailMapper::toEntity)
+                    .collect(Collectors.toList());
+            productEntity.setOrderDetails(orderDetailEntities);
+
+            return productEntity;
     }
-
 }
