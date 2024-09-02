@@ -8,6 +8,7 @@ public class UserMapper {
     public static UserDTO toDTO(UserEntity userEntity) {
         UserDTO userDTO = new UserDTO();
 
+        userDTO.setId(userEntity.getUserId());
         userDTO.setUsername(userEntity.getUsername());
         userDTO.setEmail(userEntity.getEmail());
         userDTO.setBirth(userEntity.getBirthDate());

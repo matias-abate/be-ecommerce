@@ -21,8 +21,8 @@ public class OrderEntity {
     @Column(name = "order_date")
     private LocalDate orderDate;
 
-    @Enumerated(EnumType.STRING)
-    private OrderStatus status;
+    // @Enumerated(EnumType.STRING)
+    private String status;
 
     @Column(name = "total_amount")
     private float totalAmount;

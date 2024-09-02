@@ -1,6 +1,5 @@
 package com.uade.tpo.g11.ecommerce.ecommerce.dtos;
 
-import com.uade.tpo.g11.ecommerce.ecommerce.enums.UserRole;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -14,6 +13,6 @@ public class UserDTO {
     private LocalDate birth;
     private String firstname;
     private String lastname;
-    private UserRole role;
+    private String role;
 
 }
