@@ -45,9 +45,9 @@ public class TransactionController {
 
     // DELETE
     @DeleteMapping
-    public ResponseEntity<TransactionDTO> deleteTransaction(@RequestBody TransactionDTO transaction) {
-        transactionService.deleteTransaction(transaction.getId());
-        return ResponseEntity.ok(transaction);
+    public ResponseEntity<Void> deleteTransaction(@PathVariable Integer id) {
+        transactionService.deleteTransaction(id);
+        return ResponseEntity.noContent().build();
     }
 
 }
