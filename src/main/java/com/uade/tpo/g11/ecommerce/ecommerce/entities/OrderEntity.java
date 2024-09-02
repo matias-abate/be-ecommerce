@@ -1,9 +1,12 @@
 package com.uade.tpo.g11.ecommerce.ecommerce.entities;
 
+import com.uade.tpo.g11.ecommerce.ecommerce.dtos.OrderDetailDTO;
+import com.uade.tpo.g11.ecommerce.ecommerce.dtos.TransactionDTO;
 import com.uade.tpo.g11.ecommerce.ecommerce.enums.OrderStatus;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "orders")
@@ -15,16 +18,23 @@ public class OrderEntity {
     private int orderId;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
 
     @Column(name = "order_date")
     private LocalDate orderDate;
 
-    // @Enumerated(EnumType.STRING)
+    // TODO: @Enumeration
+    @Column(name = "status", nullable = false, length = 20)
     private String status;
 
-    @Column(name = "total_amount")
+    @Column(name = "total_amount", nullable = false)
     private float totalAmount;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<OrderDetailEntity> orderDetails;
+
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+    private TransactionEntity transaction;
 
 }
