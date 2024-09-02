@@ -2,10 +2,12 @@ package com.uade.tpo.g11.ecommerce.ecommerce.mappers;
 
 import com.uade.tpo.g11.ecommerce.ecommerce.dtos.UserDTO;
 import com.uade.tpo.g11.ecommerce.ecommerce.entities.UserEntity;
+import org.springframework.stereotype.Component;
 
+@Component
 public class UserMapper {
 
-    public static UserDTO toDTO(UserEntity userEntity) {
+    public UserDTO toDTO(UserEntity userEntity) {
         UserDTO userDTO = new UserDTO();
 
         userDTO.setId(userEntity.getUserId());
@@ -19,7 +21,7 @@ public class UserMapper {
         return userDTO;
     }
 
-    public static UserEntity toEntity(UserDTO userDTO) {
+    public UserEntity toEntity(UserDTO userDTO) {
         UserEntity userEntity = new UserEntity();
 
         userEntity.setUsername(userDTO.getUsername());

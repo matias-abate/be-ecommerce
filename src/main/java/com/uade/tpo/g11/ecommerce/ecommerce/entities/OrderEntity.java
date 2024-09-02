@@ -4,10 +4,12 @@ import com.uade.tpo.g11.ecommerce.ecommerce.dtos.OrderDetailDTO;
 import com.uade.tpo.g11.ecommerce.ecommerce.dtos.TransactionDTO;
 import com.uade.tpo.g11.ecommerce.ecommerce.enums.OrderStatus;
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@Data
 @Entity
 @Table(name = "orders")
 public class OrderEntity {

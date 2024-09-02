@@ -3,6 +3,7 @@ package com.uade.tpo.g11.ecommerce.ecommerce.dtos;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 public class OrderDTO {
@@ -12,5 +13,7 @@ public class OrderDTO {
     private LocalDate orderDate;
     private String status;
     private float totalAmount;
+    private List<OrderDetailDTO> orderDetails;
+    private int transactionId;
 
 }

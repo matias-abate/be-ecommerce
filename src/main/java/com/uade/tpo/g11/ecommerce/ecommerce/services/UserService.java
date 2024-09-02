@@ -15,7 +15,11 @@ import java.util.stream.Collectors;
 @Service
 public class UserService {
 
+    @Autowired
     IUserRepository userRepository;
+
+    @Autowired
+    UserMapper userMapper;
 
     @Autowired
     public UserService(IUserRepository userRepository) {
@@ -27,7 +31,7 @@ public class UserService {
         List<UserEntity> usersEntities = userRepository.findAll();
 
         List<UserDTO> userDTOs = usersEntities.stream()
-                .map(UserMapper::toDTO)
+                .map(userMapper::toDTO)
                 .collect(Collectors.toList());
 
         return userDTOs;
@@ -39,7 +43,7 @@ public class UserService {
         Optional<UserEntity> userEntity = userRepository.findById(id);
 
         if(userEntity.isPresent()) {
-            userDTO = UserMapper.toDTO(userEntity.get());
+            userDTO = userMapper.toDTO(userEntity.get());
         }
 
         return userDTO;
@@ -47,7 +51,7 @@ public class UserService {
 
     // CREATE
     public void createUser(UserDTO userDTO) {
-        UserEntity userEntity = UserMapper.toEntity(userDTO);
+        UserEntity userEntity = userMapper.toEntity(userDTO);
         userRepository.save(userEntity);
     }
 
@@ -68,7 +72,7 @@ public class UserService {
             userEntity.setLastname(userDTO.getLastname());
 
             UserEntity user = userRepository.save(userEntity);
-            updatedUser = UserMapper.toDTO(user);
+            updatedUser = userMapper.toDTO(user);
         }
 
         return updatedUser;
