@@ -21,6 +21,6 @@ public class WishlistEntity {
     private UserEntity user;
 
     @OneToMany(mappedBy = "wishlist")
-    private List<WishlistItemEntity> wishlistItem;
+    private List<WishlistItemEntity> wishlistItems;
 
 }
