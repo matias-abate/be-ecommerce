@@ -1,6 +1,7 @@
 package com.uade.tpo.g11.ecommerce.ecommerce.controllers;
 
 import com.uade.tpo.g11.ecommerce.ecommerce.dtos.ProductDTO;
+import com.uade.tpo.g11.ecommerce.ecommerce.exceptions.ResourceNotFoundException;
 import com.uade.tpo.g11.ecommerce.ecommerce.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,7 @@ public class ProductController {
 
     // GET BY ID
     @GetMapping("/{id}")
-    public ResponseEntity<ProductDTO> getProductById(@PathVariable int id) {
+    public ResponseEntity<ProductDTO> getProductById(@PathVariable int id) throws ResourceNotFoundException {
         ProductDTO product = productService.getProductById(id);
         return ResponseEntity.ok(product);
     }
