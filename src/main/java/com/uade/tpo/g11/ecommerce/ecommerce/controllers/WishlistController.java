@@ -28,10 +28,9 @@ public class WishlistController {
     private ProductService productService;
 
     // Obtener todos los favoritos de un usuario
-    @GetMapping("/{userId}")
-    public ResponseEntity<List<WishlistItemDTO>> getWishlistByUserId(@PathVariable Integer userId) {
-          List<WishlistItemDTO> wishlistItemDTOS = wishlistService.getWishlistByUserId(userId);
-
+    @GetMapping("/get")
+    public ResponseEntity<List<WishlistItemDTO>> getWishlistByUserId(@RequestParam Integer userId) {
+        List<WishlistItemDTO> wishlistItemDTOS = wishlistService.getWishlistByUserId(userId);
         return ResponseEntity.ok(wishlistItemDTOS);
     }
 
@@ -39,7 +38,7 @@ public class WishlistController {
     public void addWishlistItem(@RequestParam Integer userId, @RequestParam Integer productId) {
         wishlistService.addWishlistItem(userId, productId);
 
-
+        // TO DO -> Fix WishlistItemMapper and return a ResponseEntity to the controller and then to the client
     }
 
 }

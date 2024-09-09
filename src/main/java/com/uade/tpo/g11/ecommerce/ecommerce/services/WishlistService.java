@@ -51,7 +51,7 @@ public class WishlistService {
 
         // Convertimos cada item a DTO
         List<WishlistItemDTO> wishlistItemDTOS = wishlistItemEntities.stream()
-                .map(wishlistItemMapper::toDTO)
+                .map(item -> wishlistItemMapper.toDTO(item))
                 .collect(Collectors.toList());
 
         // Devolvemos la lista final
