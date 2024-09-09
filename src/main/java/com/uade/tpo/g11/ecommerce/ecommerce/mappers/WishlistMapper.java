@@ -34,8 +34,6 @@ public class WishlistMapper {
     @Autowired
     IWishlistRepository wishlistRepository;
 
-    @Autowired
-    WishlistMapper wishlistMapper;
 
 
     public WishlistDTO toDTO(WishlistEntity wishlistEntity) {

@@ -1,50 +1,46 @@
 package com.uade.tpo.g11.ecommerce.ecommerce.controllers;
 
+import com.uade.tpo.g11.ecommerce.ecommerce.dtos.ProductDTO;
+import com.uade.tpo.g11.ecommerce.ecommerce.dtos.WishlistDTO;
+import com.uade.tpo.g11.ecommerce.ecommerce.dtos.WishlistItemDTO;
+import com.uade.tpo.g11.ecommerce.ecommerce.entities.WishlistEntity;
+import com.uade.tpo.g11.ecommerce.ecommerce.services.ProductService;
+import com.uade.tpo.g11.ecommerce.ecommerce.services.UserService;
+import com.uade.tpo.g11.ecommerce.ecommerce.services.WishlistService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import com.uade.tpo.g11.ecommerce.ecommerce.entity.Favorito;
-import com.uade.tpo.g11.ecommerce.ecommerce.entity.Producto;
-import com.uade.tpo.g11.ecommerce.ecommerce.entity.Usuario;
-import com.uade.tpo.g11.ecommerce.ecommerce.service.FavoritoService;
-import com.uade.tpo.g11.ecommerce.ecommerce.service.ProductoService;
-import com.uade.tpo.g11.ecommerce.ecommerce.service.UsuarioService;
-
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/Wishlist")
-public class WishlistController {}
+@RequestMapping("/wishlist")
+public class WishlistController {
 
     @Autowired
-    private FavoritoService favoritoService;
+    private WishlistService wishlistService;
 
     @Autowired
-    private UsuarioService usuarioService;
+    private UserService userService;
 
     @Autowired
-    private ProductoService productoService;
-
-    // Agregar un producto a favoritos
-    @PostMapping("/{usuarioId}/{productoId}")
-    public Favorito addWishlist(@PathVariable Integer usuarioId, @PathVariable Integer productoId) {
-        Usuario usuario = usuarioService.findById(usuarioId);
-        Producto producto = productoService.findById(productoId);
-        return favoritoService.addFavorito(usuario, producto);
-    }
+    private ProductService productService;
 
     // Obtener todos los favoritos de un usuario
-    @GetMapping("/{usuarioId}")
-    public List<Favorito> getWishlist(@PathVariable Integer usuarioId) {
-        Usuario usuario = usuarioService.findById(usuarioId);
-        return favoritoService.getFavoritosByUsuario(usuario);
+    @GetMapping("/{userId}")
+    public ResponseEntity<List<WishlistItemDTO>> getWishlistByUserId(@PathVariable Integer userId) {
+          List<WishlistItemDTO> wishlistItemDTOS = wishlistService.getWishlistByUserId(userId);
+
+        return ResponseEntity.ok(wishlistItemDTOS);
     }
 
-    // Eliminar un producto de favoritos
-    @DeleteMapping("/{usuarioId}/{productoId}")
-    public void removeWishlist(@PathVariable Integer usuarioId, @PathVariable Integer productoId) {
-        Usuario usuario = usuarioService.findById(usuarioId);
-        Producto producto = productoService.findById(productoId);
-        favoritoService.removeFavorito(usuario, producto);
+    @PostMapping("/{userId}")
+    public void addWishlistItem(@PathVariable Integer userId, @RequestBody ProductDTO productDTO) {
+
+
+        wishlistService.addWishlistItem(userId, productDTO);
+
+        // return ResponseEntity.status(HttpStatus.CREATED).body(productDTO);
     }
+
 }

@@ -8,6 +8,7 @@ import com.uade.tpo.g11.ecommerce.ecommerce.repositories.IProductRepository;
 import com.uade.tpo.g11.ecommerce.ecommerce.repositories.IWishlistItemRepository;
 import com.uade.tpo.g11.ecommerce.ecommerce.repositories.IWishlistRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -17,6 +18,7 @@ public class WishlistItemMapper {
     IWishlistRepository wishlistRepository;
 
     @Autowired
+    @Lazy
     WishlistMapper wishlistMapper;
 
     @Autowired

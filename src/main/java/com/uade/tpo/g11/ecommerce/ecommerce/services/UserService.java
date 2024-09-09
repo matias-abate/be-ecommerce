@@ -21,11 +21,6 @@ public class UserService {
     @Autowired
     UserMapper userMapper;
 
-    @Autowired
-    public UserService(IUserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
     // READ
     public List<UserDTO> getAllUsers() {
         List<UserEntity> usersEntities = userRepository.findAll();
