@@ -13,15 +13,13 @@ public class WishlistItemEntity {
     @Column(name = "wishlist_item_id")
     private int wishlistItemId;
 
-
-    @ManyToOne
-    @JoinColumn(name = "wishlist_id")
-    private WishlistEntity wishlist;
-
-
     // Relacion @ManyToOne con Product
     @ManyToOne
     @JoinColumn(name = "product_id")
     private ProductEntity product;
+
+    @ManyToOne
+    @JoinColumn(name = "wishlist_id")
+    private WishlistEntity wishlist;
 
 }

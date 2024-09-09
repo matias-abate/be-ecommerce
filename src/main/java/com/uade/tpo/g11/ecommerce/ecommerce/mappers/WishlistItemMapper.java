@@ -5,11 +5,12 @@ import com.uade.tpo.g11.ecommerce.ecommerce.entities.ProductEntity;
 import com.uade.tpo.g11.ecommerce.ecommerce.entities.WishlistEntity;
 import com.uade.tpo.g11.ecommerce.ecommerce.entities.WishlistItemEntity;
 import com.uade.tpo.g11.ecommerce.ecommerce.repositories.IProductRepository;
-import com.uade.tpo.g11.ecommerce.ecommerce.repositories.IWishlistItemRepository;
 import com.uade.tpo.g11.ecommerce.ecommerce.repositories.IWishlistRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 @Component
 public class WishlistItemMapper {
@@ -33,13 +34,19 @@ public class WishlistItemMapper {
         // ID Setter
         wishlistItemDTO.setWishlistItemId(wishlistItemEntity.getWishlistItemId());
 
+        // Product Setter
+        ProductEntity productEntity = productRepository.findById(wishlistItemEntity.getProduct().getProductId()).orElseThrow(
+                () -> new RuntimeException("Product not found at @WishlistItemMapper")
+        );
+        wishlistItemDTO.setProduct(productMapper.toDTO(productEntity));
+
         // Wishlist Setter
-        WishlistEntity wishlistEntity = wishlistRepository.findById(wishlistItemEntity.getWishlistItemId()).orElse(null);
+        WishlistEntity wishlistEntity = wishlistRepository.findById(wishlistItemEntity.getWishlistItemId()).orElseThrow(
+                () -> new RuntimeException("Wishlist not found at @WishlistItemMapper")
+        );
+
         wishlistItemDTO.setWishlist(wishlistMapper.toDTO(wishlistEntity));
 
-        // Product Setter
-        ProductEntity productEntity = productRepository.findById(wishlistItemEntity.getProduct().getProductId()).orElse(null);
-        wishlistItemDTO.setProduct(productMapper.toDTO(productEntity));
 
         return wishlistItemDTO;
     }
@@ -49,9 +56,6 @@ public class WishlistItemMapper {
 
         // ID Setter
         wishlistItemEntity.setWishlistItemId(wishlistItemDTO.getWishlistItemId());
-
-        // Wishlist Setter
-        wishlistItemEntity.setWishlist(wishlistMapper.toEntity(wishlistItemDTO.getWishlist()));
 
         // Product Setter
         wishlistItemEntity.setProduct(productMapper.toEntity(wishlistItemDTO.getProduct()));

@@ -7,6 +7,7 @@ import com.uade.tpo.g11.ecommerce.ecommerce.entities.WishlistEntity;
 import com.uade.tpo.g11.ecommerce.ecommerce.services.ProductService;
 import com.uade.tpo.g11.ecommerce.ecommerce.services.UserService;
 import com.uade.tpo.g11.ecommerce.ecommerce.services.WishlistService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,13 +35,11 @@ public class WishlistController {
         return ResponseEntity.ok(wishlistItemDTOS);
     }
 
-    @PostMapping("/{userId}")
-    public void addWishlistItem(@PathVariable Integer userId, @RequestBody ProductDTO productDTO) {
+    @PostMapping("/add")
+    public void addWishlistItem(@RequestParam Integer userId, @RequestParam Integer productId) {
+        wishlistService.addWishlistItem(userId, productId);
 
 
-        wishlistService.addWishlistItem(userId, productDTO);
-
-        // return ResponseEntity.status(HttpStatus.CREATED).body(productDTO);
     }
 
 }

@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 public interface IWishlistRepository extends JpaRepository<WishlistEntity, Integer> {
 
     // Find wishlist by user id
-    WishlistEntity findByUserUserId(int userId);
+    WishlistEntity findByUserUserId(Integer userId);
 
 }

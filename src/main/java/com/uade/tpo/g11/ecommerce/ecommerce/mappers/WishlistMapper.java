@@ -38,6 +38,10 @@ public class WishlistMapper {
 
     public WishlistDTO toDTO(WishlistEntity wishlistEntity) {
 
+        if (wishlistEntity == null) {
+            throw new IllegalArgumentException("WishlistEntity cannot be null");
+        }
+
         WishlistDTO wishlistDTO = new WishlistDTO();
 
         // ID Setter
@@ -50,17 +54,11 @@ public class WishlistMapper {
         }
 
         // WishlistItem List Setter
-        // Filtramos los items que correspondan a nuestra wishlist
-        List<WishlistItemEntity> wishlistItems = wishlistItemRepository.findAll().stream()
-                .filter(wishlistItem -> wishlistItem.getWishlist().getWishlistId() == wishlistEntity.getWishlistId())
+        List<WishlistItemDTO> wishlistItemsDTOs = wishlistEntity.getWishlistItems().stream()
+                .map(wishlistItemEntity -> wishlistItemMapper.toDTO(wishlistItemEntity))
                 .collect(Collectors.toList());
 
-        // Convertimos esos items previamente filtrados a DTOs para poder settearlos
-        List<WishlistItemDTO> wishlistItemDTOS = wishlistItems.stream()
-                .map(wishlistItemMapper::toDTO)
-                .collect(Collectors.toList());
-
-        wishlistDTO.setWishlistItems(wishlistItemDTOS);
+        wishlistDTO.setWishlistItems(wishlistItemsDTOs);
 
         return wishlistDTO;
     }

@@ -3,6 +3,7 @@ package com.uade.tpo.g11.ecommerce.ecommerce.entities;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -17,10 +18,10 @@ public class WishlistEntity {
     private int wishlistId;
 
     @OneToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private UserEntity user;
 
     @OneToMany(mappedBy = "wishlist")
-    private List<WishlistItemEntity> wishlistItems;
+    private List<WishlistItemEntity> wishlistItems = new ArrayList<>();
 
 }
