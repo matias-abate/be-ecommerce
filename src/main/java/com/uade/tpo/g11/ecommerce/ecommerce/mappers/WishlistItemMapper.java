@@ -40,10 +40,6 @@ public class WishlistItemMapper {
         );
         wishlistItemDTO.setProduct(productMapper.toDTO(productEntity));
 
-        // Wishlist Id Setter
-        wishlistItemDTO.setWishlist_id(wishlistItemEntity.getWishlistItemId());
-
-
         return wishlistItemDTO;
     }
 

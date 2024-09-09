@@ -88,7 +88,6 @@ public class WishlistService {
         }
 
 
-
         // 5. Si no está, creamos un nuevo WishlistItem y lo agregamos a la lista
         WishlistItemEntity wishlistItemEntity = new WishlistItemEntity();
         wishlistItemEntity.setWishlist(wishlistEntity);
@@ -105,5 +104,43 @@ public class WishlistService {
 //                .collect(Collectors.toList());
 
         //return wishlistItemDTOS;
+    }
+
+    // Eliminar un producto de la wishlist
+    public List<WishlistItemDTO> deleteItem(Integer userId, Integer productId) {
+
+        // 1. Buscamos y verificamos la wishlist del usuario
+        WishlistEntity wishlistEntity = wishlistRepository.findByUserUserId(userId);
+
+        if(wishlistEntity == null) {
+            throw new RuntimeException("Wishlist not found for user id: " + userId);
+        }
+
+        // 2. Si tiene wishlist, vamos a buscar al producto en la misma y, en caso de encontrarlo, lo eliminamos
+        List<WishlistItemEntity> wishlistItems = wishlistEntity.getWishlistItems();
+        WishlistItemEntity itemToRemove = null;
+
+        for (WishlistItemEntity item : wishlistItems) {
+            if (item.getProduct().getProductId() == productId) {
+                itemToRemove = item;
+                break;
+            }
+        }
+
+        if (itemToRemove != null) {
+            wishlistItems.remove(itemToRemove);
+            wishlistItemRepository.delete(itemToRemove);
+            wishlistRepository.save(wishlistEntity);
+        } else {
+            throw new RuntimeException("Product not found in wishlist");
+        }
+
+        // 3. Convertimos la lista a DTOs para retornarla
+        List<WishlistItemDTO> wishlistItemDTOS = wishlistItems.stream()
+                .map(wishlistItemMapper::toDTO)
+                .collect(Collectors.toList());
+
+        return wishlistItemDTOS;
+
     }
 }

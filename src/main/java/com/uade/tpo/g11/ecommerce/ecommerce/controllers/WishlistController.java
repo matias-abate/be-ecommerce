@@ -41,4 +41,10 @@ public class WishlistController {
         // TO DO -> Fix WishlistItemMapper and return a ResponseEntity to the controller and then to the client
     }
 
+    @DeleteMapping("/delete")
+    public ResponseEntity<List<WishlistItemDTO>> deleteWishlistItem(@RequestParam Integer userId, @RequestParam Integer productId) {
+       List<WishlistItemDTO> wishlistItemDTOS  = wishlistService.deleteItem(userId, productId);
+       return ResponseEntity.ok(wishlistItemDTOS);
+    }
+
 }
