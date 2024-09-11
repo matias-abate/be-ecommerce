@@ -1,6 +1,6 @@
 package com.uade.tpo.g11.ecommerce.ecommerce.config;
 
-import com.example.demo.repository.UserRepository;
+import com.uade.tpo.g11.ecommerce.ecommerce.repositories.IUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @RequiredArgsConstructor
 public class ApplicationConfig {
-    private final UserRepository repositories;
+    private final IUserRepository repository;
 
     @Bean
     public UserDetailsService userDetailsService() {
