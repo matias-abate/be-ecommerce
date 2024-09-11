@@ -21,27 +21,22 @@ public class WishlistController {
     @Autowired
     private WishlistService wishlistService;
 
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private ProductService productService;
 
     // Obtener todos los favoritos de un usuario
-    @GetMapping("/get")
+    @GetMapping("")
     public ResponseEntity<List<WishlistItemDTO>> getWishlistByUserId(@RequestParam Integer userId) {
         List<WishlistItemDTO> wishlistItemDTOS = wishlistService.getWishlistByUserId(userId);
         return ResponseEntity.ok(wishlistItemDTOS);
     }
 
-    @PostMapping("/add")
+    @PostMapping("")
     public void addWishlistItem(@RequestParam Integer userId, @RequestParam Integer productId) {
         wishlistService.addWishlistItem(userId, productId);
 
         // TO DO -> Fix WishlistItemMapper and return a ResponseEntity to the controller and then to the client
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("")
     public ResponseEntity<List<WishlistItemDTO>> deleteWishlistItem(@RequestParam Integer userId, @RequestParam Integer productId) {
        List<WishlistItemDTO> wishlistItemDTOS  = wishlistService.deleteItem(userId, productId);
        return ResponseEntity.ok(wishlistItemDTOS);
