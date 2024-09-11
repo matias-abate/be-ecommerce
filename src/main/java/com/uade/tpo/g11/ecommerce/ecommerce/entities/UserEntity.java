@@ -1,5 +1,6 @@
 package com.uade.tpo.g11.ecommerce.ecommerce.entities;
 
+import com.uade.tpo.g11.ecommerce.ecommerce.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -35,8 +36,9 @@ public class UserEntity {
     @Column(name = "lastname", length = 50)
     private String lastname;
 
-    @Column(name = "role", length = 50)
-    private String role;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false, length = 50)
+    private UserRole role;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<OrderEntity> orders;

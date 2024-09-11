@@ -29,5 +29,4 @@ public class OrderDetailEntity {
 
     @Column(name = "total_price", nullable = false)
     private float totalPrice;
-
 }

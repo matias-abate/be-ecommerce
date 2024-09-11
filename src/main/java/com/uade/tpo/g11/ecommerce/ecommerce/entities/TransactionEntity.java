@@ -1,5 +1,6 @@
 package com.uade.tpo.g11.ecommerce.ecommerce.entities;
 
+import com.uade.tpo.g11.ecommerce.ecommerce.enums.TransactionStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -28,7 +29,8 @@ public class TransactionEntity {
     @Column(name = "payment_method", nullable = false, length = 20)
     private String paymentMethod;
 
-    @Column(name = "status", nullable = false, length = 20)
-    private String status;
-
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private TransactionStatus status;
 }
+

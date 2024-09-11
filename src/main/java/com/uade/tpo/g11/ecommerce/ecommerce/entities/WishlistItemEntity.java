@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "wishlist_item")
+@Table(name = "wishlist_items")
 public class WishlistItemEntity {
 
     @Id

@@ -26,9 +26,9 @@ public class OrderEntity {
     @Column(name = "order_date")
     private LocalDate orderDate;
 
-    // TODO: @Enumeration
-    @Column(name = "status", nullable = false, length = 20)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private OrderStatus status;
 
     @Column(name = "total_amount", nullable = false)
     private float totalAmount;

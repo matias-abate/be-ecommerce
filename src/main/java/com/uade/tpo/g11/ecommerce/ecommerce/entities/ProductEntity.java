@@ -31,13 +31,13 @@ public class ProductEntity {
     @Column(name = "stock", nullable = false)
     private int stock;
 
-    @Column(name = "category", nullable = false, length = 50)
-    private String category;
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = false)
+    private CategoryEntity category;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product")
     private List<OrderDetailEntity> orderDetails;
 
     @OneToMany(mappedBy = "product")
     private List<WishlistItemEntity> wishlistItems;
-
 }
