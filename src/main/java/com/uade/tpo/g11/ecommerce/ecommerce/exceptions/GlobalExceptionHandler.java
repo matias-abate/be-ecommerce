@@ -28,6 +28,15 @@ public class GenericException extends HibernateException {
         return exception.getMessage();
     }
 }
+ public class BadRequestException extends HibernateException {
+    public BadRequestException(String message) {
+        super(message);
+    }
+
+    public String getMessage() {
+        return super.getMessage();
+    }
+}   
 
 
 }
