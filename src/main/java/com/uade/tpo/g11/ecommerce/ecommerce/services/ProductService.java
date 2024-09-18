@@ -56,7 +56,7 @@ public class ProductService {
 
     }
 
-    //READ PRODUCTO POR CATEGORIA
+    //LISTA DE PRODUCTOS POR CATEGORIA
     public Map<String, List<ProductDTO>> obtenerProductosAgrupadosPorCategoria() {
         // Obtener todas las entidades de productos
         List<ProductEntity> productsEntity = productRepository.findAll();
@@ -66,6 +66,8 @@ public class ProductService {
                 .map(productMapper::toDTO) // Convertir cada entidad a DTO
                 .collect(Collectors.groupingBy(ProductDTO::getCategory)); // Agrupar por la categoría
     }
+
+    
 
     // CREATE
     public ProductDTO createProduct(ProductDTO productDTO) {
