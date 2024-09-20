@@ -31,4 +31,23 @@ public class CartController {
         CartDTO cartOptional = cartService.getCartById(cartId);
         return ResponseEntity.ok(cartOptional);
     }
+
+
+    // Método para agregar un producto al carrito
+    @PostMapping("/{cartId}/products/{productId}")
+    public ResponseEntity<CarItemDTO> addProductToCart(
+            @PathVariable Long cartId,
+            @PathVariable Long productId,
+            @RequestParam int quantity) {
+
+        CarItemDTO carItemDTO = cartService.addProductToCart(cartId, productId, quantity);
+        return ResponseEntity.ok(carItemDTO);
+    }
+
+    // Método para calcular el total del carrito
+    @GetMapping("/{cartId}/total")
+    public ResponseEntity<BigDecimal> calculateCartTotal(@PathVariable Long cartId) {
+        BigDecimal total = cartService.calculateCartTotal(cartId);
+        return ResponseEntity.ok(total);
+    }
 }

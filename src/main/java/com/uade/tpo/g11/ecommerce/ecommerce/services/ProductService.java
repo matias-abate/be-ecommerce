@@ -1,16 +1,14 @@
 package com.uade.tpo.g11.ecommerce.ecommerce.services;
 
-import com.uade.tpo.g11.ecommerce.ecommerce.dtos.OrderDetailDTO;
 import com.uade.tpo.g11.ecommerce.ecommerce.dtos.ProductDTO;
 import com.uade.tpo.g11.ecommerce.ecommerce.entities.OrderDetailEntity;
 import com.uade.tpo.g11.ecommerce.ecommerce.entities.ProductEntity;
 import com.uade.tpo.g11.ecommerce.ecommerce.mappers.OrderDetailMapper;
 import com.uade.tpo.g11.ecommerce.ecommerce.mappers.ProductMapper;
-import com.uade.tpo.g11.ecommerce.ecommerce.repositories.IProductRepository;
+import com.uade.tpo.g11.ecommerce.ecommerce.mappers.repositories.IProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
