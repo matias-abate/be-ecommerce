@@ -32,8 +32,7 @@ public class CartController {
         return ResponseEntity.ok(cartOptional);
     }
 
-
-    // Método para agregar un producto al carrito
+    // Metodo para agregar un producto al carrito
     @PostMapping("/{cartId}/products/{productId}")
     public ResponseEntity<CarItemDTO> addProductToCart(
             @PathVariable Long cartId,
@@ -44,10 +43,36 @@ public class CartController {
         return ResponseEntity.ok(carItemDTO);
     }
 
-    // Método para calcular el total del carrito
+    // Metodo para calcular el total del carrito
     @GetMapping("/{cartId}/total")
     public ResponseEntity<BigDecimal> calculateCartTotal(@PathVariable Long cartId) {
         BigDecimal total = cartService.calculateCartTotal(cartId);
         return ResponseEntity.ok(total);
+    }
+
+    // Endpoint para hacer el checkout del carrito
+    @PostMapping("/{userId}/checkout")
+    public ResponseEntity<String> checkoutCart(@PathVariable Long userId) {
+        String result = checkoutService.checkoutCart(userId);
+
+        if (result.contains("Checkout exitoso")) {
+            return ResponseEntity.ok(result);
+        } else {
+            return ResponseEntity.badRequest().body(result);
+        }
+    }
+
+    // Endpoint para eliminar un producto del carrito
+    @DeleteMapping("/{userId}/items/{productId}")
+    public ResponseEntity<Void> removeProductFromCart(@PathVariable Long userId, @PathVariable Long productId) {
+        cartService.removeProductFromCart(userId, productId);
+        return ResponseEntity.noContent().build();
+    }
+
+    // Endpoint para vaciar el carrito
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<Void> clearCart(@PathVariable Long userId) {
+        cartService.clearCart(userId);
+        return ResponseEntity.noContent().build();
     }
 }
