@@ -41,6 +41,6 @@ public class UserEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<OrderEntity> orders;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<ProductEntity> recentlyViewedProducts;
+   //@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+   // private List<ProductEntity> recentlyViewedProducts;
 }
