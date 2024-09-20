@@ -7,9 +7,9 @@ import com.uade.tpo.g11.ecommerce.ecommerce.entities.TransactionEntity;
 import com.uade.tpo.g11.ecommerce.ecommerce.entities.UserEntity;
 import com.uade.tpo.g11.ecommerce.ecommerce.mappers.OrderDetailMapper;
 import com.uade.tpo.g11.ecommerce.ecommerce.mappers.OrderMapper;
-import com.uade.tpo.g11.ecommerce.ecommerce.mappers.repositories.IOrderRepository;
-import com.uade.tpo.g11.ecommerce.ecommerce.mappers.repositories.ITransactionRepository;
-import com.uade.tpo.g11.ecommerce.ecommerce.mappers.repositories.IUserRepository;
+import com.uade.tpo.g11.ecommerce.ecommerce.repositories.IOrderRepository;
+import com.uade.tpo.g11.ecommerce.ecommerce.repositories.ITransactionRepository;
+import com.uade.tpo.g11.ecommerce.ecommerce.repositories.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

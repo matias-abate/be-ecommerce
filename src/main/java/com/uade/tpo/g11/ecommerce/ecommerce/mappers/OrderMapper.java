@@ -4,8 +4,8 @@ import com.uade.tpo.g11.ecommerce.ecommerce.dtos.OrderDTO;
 import com.uade.tpo.g11.ecommerce.ecommerce.dtos.OrderDetailDTO;
 import com.uade.tpo.g11.ecommerce.ecommerce.entities.OrderDetailEntity;
 import com.uade.tpo.g11.ecommerce.ecommerce.entities.OrderEntity;
-import com.uade.tpo.g11.ecommerce.ecommerce.mappers.repositories.ITransactionRepository;
-import com.uade.tpo.g11.ecommerce.ecommerce.mappers.repositories.IUserRepository;
+import com.uade.tpo.g11.ecommerce.ecommerce.repositories.ITransactionRepository;
+import com.uade.tpo.g11.ecommerce.ecommerce.repositories.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

@@ -2,8 +2,14 @@ package com.uade.tpo.g11.ecommerce.ecommerce.services;
 
 import com.uade.tpo.g11.ecommerce.ecommerce.dtos.CartDTO;
 import com.uade.tpo.g11.ecommerce.ecommerce.entities.CartEntity;
+import com.uade.tpo.g11.ecommerce.ecommerce.entities.CartItemEntity;
+import com.uade.tpo.g11.ecommerce.ecommerce.entities.ProductEntity;
+import com.uade.tpo.g11.ecommerce.ecommerce.entities.UserEntity;
 import com.uade.tpo.g11.ecommerce.ecommerce.mappers.CartMapper;
+import com.uade.tpo.g11.ecommerce.ecommerce.repositories.ICartItemRepository;
 import com.uade.tpo.g11.ecommerce.ecommerce.repositories.ICartRepository;
+import com.uade.tpo.g11.ecommerce.ecommerce.repositories.IProductRepository;
+import com.uade.tpo.g11.ecommerce.ecommerce.repositories.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +26,15 @@ public class CartService {
 
     @Autowired
     CartMapper cartMapper;
+
+    @Autowired
+    IUserRepository userRepository;
+
+    @Autowired
+    IProductRepository productRepository;
+
+    @Autowired
+    ICartItemRepository cartItemRepository;
 
     @Autowired
     public CartService(ICartRepository cartRepository) {
@@ -45,8 +60,47 @@ public class CartService {
             throw new RuntimeException("Carrito no encontrado");
         }
     }
+
+    public String addProductToCart(int userId, int productId, int quantity) {
+        UserEntity user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        ProductEntity product = productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+        if (product.getStock() < quantity) {
+            return "Insufficient stock for product: " + product.getName();
+        }
+
+        CartEntity cart = cartRepository.findByUser_Id(userId).orElseGet(() -> {
+            CartEntity newCart = new CartEntity();
+            newCart.setUser(user);
+            return cartRepository.save(newCart);
+        });
+
+        Optional<CartItemEntity> existingCartItem = cart.getCartItems().stream()
+                .filter(item -> item.getProduct().getProductId() == productId)
+                .findFirst();
+
+        if (existingCartItem.isPresent()) {
+            CartItemEntity cartItem = existingCartItem.get();
+            cartItem.setQuantity(cartItem.getQuantity() + quantity);
+        } else {
+            CartItemEntity cartItem = new CartItemEntity();
+            cartItem.setProduct(product);
+            cartItem.setCart(cart);
+            cartItem.setQuantity(quantity);
+            cart.getCartItems().add(cartItem);
+        }
+
+        product.setStock(product.getStock() - quantity);
+        productRepository.save(product);
+        cartRepository.save(cart);
+
+        return "Product added to cart successfully";
+    }
     // Metodo para agregar un producto al carrito
-    public CarItemDTO addProductToCart(Long cartId, Long productId, int quantity) {
+    /*public CarItemDTO addProductToCart(int cartId, int productId, int quantity) {
         CartEntity cart = cartRepository.findById(cartId).orElseThrow(() -> new RuntimeException("Carrito no encontrado"));
         ProductEntity product = productRepository.findById(productId).orElseThrow(() -> new RuntimeException("Producto no encontrado"));
 
@@ -119,6 +173,6 @@ public class CartService {
         // Eliminar todos los CarItems
         carItemRepository.deleteAll(carItems);
     }
-}
+}*/
 
 }
