@@ -35,6 +35,8 @@ public class CartService {
 
     @Autowired
     ICartItemRepository cartItemRepository;
+    @Autowired
+    private UserService userService;
 
     @Autowired
     public CartService(ICartRepository cartRepository) {
@@ -61,7 +63,7 @@ public class CartService {
         }
     }
 
-    public String addProductToCart(int userId, int productId, int quantity) {
+    public String addProductToCart(Integer userId, int productId, int quantity) {
         UserEntity user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
