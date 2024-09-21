@@ -1,6 +1,5 @@
 package com.uade.tpo.g11.ecommerce.ecommerce.config;
 
-import com.example.demo.repository.entities.Role;
 import com.uade.tpo.g11.ecommerce.ecommerce.entities.RoleEntity;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
