@@ -1,4 +1,4 @@
-package com.uade.tpo.g11.ecommerce.ecommerce.config;
+package com.uade.tpo.g11.ecommerce.ecommerce.services;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -51,6 +51,10 @@ public class JwtService {
                 .parseClaimsJws(token)
                 .getBody();
         return claimsResolver.apply(claims);
+    }
+
+    public long getExpirationTime() {
+        return jwtExpiration;
     }
 
     private SecretKey getSecretKey() {

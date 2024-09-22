@@ -1,6 +1,7 @@
 package com.uade.tpo.g11.ecommerce.ecommerce.services;
 
-import com.uade.tpo.g11.ecommerce.ecommerce.config.JwtService;
+import com.uade.tpo.g11.ecommerce.ecommerce.dtos.LoginRequestDTO;
+import com.uade.tpo.g11.ecommerce.ecommerce.dtos.LoginResponseDTO;
 import com.uade.tpo.g11.ecommerce.ecommerce.repositories.IUserRepository;
 import com.uade.tpo.g11.ecommerce.ecommerce.controllers.auth.*;
 import com.uade.tpo.g11.ecommerce.ecommerce.entities.UserEntity;
@@ -33,6 +34,23 @@ public class AuthenticationService {
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
                 .accessToken(jwtToken)
+                .build();
+    }
+    public LoginResponseDTO login(LoginRequestDTO request) {
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.getEmail(),
+                        request.getPassword()
+                )
+        );
+
+        var user = repository.findByEmail(request.getEmail())
+                .orElseThrow();
+
+        String jwtToken = jwtService.generateToken(user);
+        return LoginResponseDTO.builder()
+                .token(jwtToken)
+                .expiresIn(jwtService.getExpirationTime())
                 .build();
     }
 

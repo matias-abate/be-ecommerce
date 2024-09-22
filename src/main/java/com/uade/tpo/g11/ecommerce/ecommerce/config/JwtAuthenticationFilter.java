@@ -1,5 +1,5 @@
 package com.uade.tpo.g11.ecommerce.ecommerce.config;
-import com.uade.tpo.g11.ecommerce.ecommerce.config.JwtService;
+import com.uade.tpo.g11.ecommerce.ecommerce.services.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

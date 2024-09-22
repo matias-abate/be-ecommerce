@@ -4,6 +4,7 @@ import com.uade.tpo.g11.ecommerce.ecommerce.dtos.ProductDTO;
 import com.uade.tpo.g11.ecommerce.ecommerce.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
