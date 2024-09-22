@@ -14,7 +14,7 @@ public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private int userId;
+    private Integer userId;
 
     @Column(name = "username", unique = false, nullable = false, length = 50)
     private String username;
@@ -41,6 +41,7 @@ public class UserEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<OrderEntity> orders;
 
-   //@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-   // private List<ProductEntity> recentlyViewedProducts;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private CartEntity cart;
+
 }
