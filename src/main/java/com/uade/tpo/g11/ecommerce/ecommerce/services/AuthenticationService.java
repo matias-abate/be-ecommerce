@@ -20,7 +20,7 @@ public class AuthenticationService {
 
     public AuthenticationResponse register(RegisterRequest request) {
         var user = UserEntity.builder()
-                .username(request.getLastname())
+                .username(request.getUsername())
                 .email(request.getEmail())
                 .birthDate(request.getBirthDate())
                 .firstname(request.getFirstname())

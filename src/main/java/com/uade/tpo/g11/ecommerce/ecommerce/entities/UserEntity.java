@@ -1,5 +1,6 @@
 package com.uade.tpo.g11.ecommerce.ecommerce.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.AllArgsConstructor;
@@ -36,6 +37,7 @@ public class UserEntity implements UserDetails {
 
     @Column(name = "birth_date")
     @Temporal(TemporalType.DATE)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthDate;
 
     @Column(name = "firstname", length = 50)
