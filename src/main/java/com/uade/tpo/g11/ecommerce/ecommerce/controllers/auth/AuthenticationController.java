@@ -1,6 +1,6 @@
 package com.uade.tpo.g11.ecommerce.ecommerce.controllers.auth;
 
-import com.example.demo.service.AuthenticationService;
+import com.uade.tpo.g11.ecommerce.ecommerce.services.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
