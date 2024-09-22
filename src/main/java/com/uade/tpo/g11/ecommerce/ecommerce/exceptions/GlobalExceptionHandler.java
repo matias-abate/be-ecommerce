@@ -1,5 +1,6 @@
 package com.uade.tpo.g11.ecommerce.ecommerce.exceptions;
 
+import org.hibernate.HibernateException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
