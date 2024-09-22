@@ -1,19 +1,18 @@
 package com.uade.tpo.g11.ecommerce.ecommerce.services;
 
 import com.uade.tpo.g11.ecommerce.ecommerce.dtos.CartDTO;
-import com.uade.tpo.g11.ecommerce.ecommerce.entities.CartEntity;
-import com.uade.tpo.g11.ecommerce.ecommerce.entities.CartItemEntity;
-import com.uade.tpo.g11.ecommerce.ecommerce.entities.ProductEntity;
-import com.uade.tpo.g11.ecommerce.ecommerce.entities.UserEntity;
+import com.uade.tpo.g11.ecommerce.ecommerce.dtos.OrderDTO;
+import com.uade.tpo.g11.ecommerce.ecommerce.dtos.OrderDetailDTO;
+import com.uade.tpo.g11.ecommerce.ecommerce.entities.*;
 import com.uade.tpo.g11.ecommerce.ecommerce.mappers.CartMapper;
-import com.uade.tpo.g11.ecommerce.ecommerce.repositories.ICartItemRepository;
-import com.uade.tpo.g11.ecommerce.ecommerce.repositories.ICartRepository;
-import com.uade.tpo.g11.ecommerce.ecommerce.repositories.IProductRepository;
-import com.uade.tpo.g11.ecommerce.ecommerce.repositories.IUserRepository;
+import com.uade.tpo.g11.ecommerce.ecommerce.mappers.OrderMapper;
+import com.uade.tpo.g11.ecommerce.ecommerce.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +28,9 @@ public class CartService {
     CartMapper cartMapper;
 
     @Autowired
+    OrderMapper orderMapper;
+
+    @Autowired
     IUserRepository userRepository;
 
     @Autowired
@@ -36,6 +38,12 @@ public class CartService {
 
     @Autowired
     ICartItemRepository cartItemRepository;
+
+    @Autowired
+    IOrderRepository orderRepository;
+
+    @Autowired
+    IOrderDetailRepository orderDetailRepository;
 
     @Autowired
     private UserService userService;
@@ -146,7 +154,80 @@ public class CartService {
     }
 
     //checkout del carrito
+    @Transactional
+    public OrderDTO checkoutCart(Integer userId) {
+        // Buscar el carrito del usuario
+        CartEntity cart = cartRepository.findByUser_UserId(userId)
+                .orElseThrow(() -> new RuntimeException("Carrito no encontrado para el usuario con ID: " + userId));
 
+        if (cart.getCartItems().isEmpty()) {
+            throw new RuntimeException("El carrito está vacío");
+        }
+
+        float totalCost = 0.0f;
+        List<OrderDetailEntity> orderDetails = new ArrayList<>();
+
+        OrderEntity order = new OrderEntity();
+        order.setUser(cart.getUser());
+        order.setOrderDate(LocalDate.now());
+        order.setStatus("PENDING"); // Inicialmente en estado pendiente
+
+
+        List<ProductEntity> productsToUpdate = new ArrayList<>();
+
+        // Iterar sobre los ítems del carrito
+        for (CartItemEntity cartItem : cart.getCartItems()) {
+            ProductEntity product = cartItem.getProduct();
+
+            // Validar si hay stock suficiente
+            if (product.getStock() < cartItem.getQuantity()) {
+                throw new RuntimeException("No hay suficiente stock para el producto: " + product.getName());
+            }
+
+            // Reducir el stock y guardar el producto en la lista
+            product.setStock(product.getStock() - cartItem.getQuantity());
+            productsToUpdate.add(product);
+
+            // Crear un OrderDetail
+            OrderDetailEntity orderDetail = new OrderDetailEntity();
+            orderDetail.setProduct(product);
+            orderDetail.setUnitPrice(product.getPrice());
+            orderDetail.setQuantity(cartItem.getQuantity());
+            orderDetail.setTotalPrice(product.getPrice() * cartItem.getQuantity());
+            orderDetail.setOrder(order);
+
+            orderDetails.add(orderDetail);
+
+            // Calcular el costo total
+            totalCost += product.getPrice() * cartItem.getQuantity();
+        }
+
+        // Guardar todos los productos modificados en una sola operación
+        productRepository.saveAll(productsToUpdate);
+
+        // Setear el total de la orden
+        order.setTotalAmount(totalCost);
+        order.setOrderDetails(orderDetails);
+
+        // Guardar la orden
+        OrderEntity savedOrder = orderRepository.save(order);
+
+        // Guardar los detalles de la orden
+        for (OrderDetailEntity detail : orderDetails) {
+            detail.setOrder(savedOrder); // Asignar la orden guardada
+            orderDetailRepository.save(detail); // Guardar cada detalle de la orden
+        }
+
+        // Limpiar el carrito del usuario y borrar los ítems
+        cart.getCartItems().clear();
+        cartRepository.save(cart);
+
+        // Cambiar el estado de la orden a COMPLETED
+        savedOrder.setStatus("COMPLETED");
+        orderRepository.save(savedOrder);
+
+        return orderMapper.toDTO(savedOrder);
+    }
 
 
     /*

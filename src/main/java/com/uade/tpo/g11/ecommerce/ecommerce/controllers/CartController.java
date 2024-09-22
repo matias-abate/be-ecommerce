@@ -2,6 +2,7 @@ package com.uade.tpo.g11.ecommerce.ecommerce.controllers;
 
 
 import com.uade.tpo.g11.ecommerce.ecommerce.dtos.CartDTO;
+import com.uade.tpo.g11.ecommerce.ecommerce.dtos.OrderDTO;
 import com.uade.tpo.g11.ecommerce.ecommerce.services.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,11 +24,6 @@ public class CartController {
         return ResponseEntity.ok(carts);
     }
 
-    /*@GetMapping("/{cartId}")
-    public ResponseEntity<CartDTO> getCartById(@PathVariable int cartId){
-        CartDTO cartOptional = cartService.getCartById(cartId);
-        return ResponseEntity.ok(cartOptional);
-    }*/
 
     @GetMapping("/{userId}")
     public ResponseEntity<CartDTO> getCart(@PathVariable Integer userId) {
@@ -60,6 +56,15 @@ public class CartController {
         CartDTO updatedCart = cartService.removeProductFromCart(userId, productId);
         return ResponseEntity.ok(updatedCart);
     }
+
+    //checkout carrito
+    @PostMapping("/{userId}/checkout")
+    public ResponseEntity<OrderDTO> checkoutCart(@PathVariable Integer userId) {
+        OrderDTO orderDTO = cartService.checkoutCart(userId);
+        return ResponseEntity.ok(orderDTO); // Devolver la orden creada
+    }
+
+
 /*
     // Metodo para calcular el total del carrito
     @GetMapping("/{cartId}/total")
