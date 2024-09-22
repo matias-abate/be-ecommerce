@@ -31,7 +31,7 @@ public class ProductEntity {
     @Column(name = "stock", nullable = false)
     private int stock;
 
-    @Column(name = "category", nullable = false, length = 50)
+    @Column(name = "category", nullable = false)
     private String category;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
@@ -39,5 +39,9 @@ public class ProductEntity {
 
     @OneToMany(mappedBy = "product")
     private List<WishlistItemEntity> wishlistItems;
+
+    @Column(name = "isFeatured", nullable = false)
+    private boolean isFeatured = false;
+
 
 }
