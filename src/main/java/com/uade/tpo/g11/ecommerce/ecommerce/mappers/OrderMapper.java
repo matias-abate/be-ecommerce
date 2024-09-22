@@ -4,14 +4,12 @@ import com.uade.tpo.g11.ecommerce.ecommerce.dtos.OrderDTO;
 import com.uade.tpo.g11.ecommerce.ecommerce.dtos.OrderDetailDTO;
 import com.uade.tpo.g11.ecommerce.ecommerce.entities.OrderDetailEntity;
 import com.uade.tpo.g11.ecommerce.ecommerce.entities.OrderEntity;
-import com.uade.tpo.g11.ecommerce.ecommerce.entities.TransactionEntity;
 import com.uade.tpo.g11.ecommerce.ecommerce.repositories.ITransactionRepository;
 import com.uade.tpo.g11.ecommerce.ecommerce.repositories.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -35,7 +33,12 @@ public class OrderMapper {
         orderDTO.setOrderDate(orderEntity.getOrderDate());
         orderDTO.setStatus(orderEntity.getStatus());
         orderDTO.setTotalAmount(orderEntity.getTotalAmount());
-        orderDTO.setTransactionId(orderEntity.getTransaction().getTransactionId());
+
+        if (orderEntity.getTransaction() != null) {
+            orderDTO.setTransactionId(orderEntity.getTransaction().getTransactionId());
+        } else {
+            orderDTO.setTransactionId(orderEntity.getOrderId());
+        }
 
         List<OrderDetailDTO> orderDetails = orderEntity.getOrderDetails().stream()
                 .map(orderDetailMapper::toDTO)

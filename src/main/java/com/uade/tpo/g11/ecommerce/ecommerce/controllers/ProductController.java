@@ -1,12 +1,15 @@
 package com.uade.tpo.g11.ecommerce.ecommerce.controllers;
 
 import com.uade.tpo.g11.ecommerce.ecommerce.dtos.ProductDTO;
+import com.uade.tpo.g11.ecommerce.ecommerce.exceptions.ResourceNotFoundException;
 import com.uade.tpo.g11.ecommerce.ecommerce.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -25,30 +28,46 @@ public class ProductController {
 
     // GET BY ID
     @GetMapping("/{id}")
-    public ResponseEntity<ProductDTO> getProductById(@PathVariable int id) {
+    public ResponseEntity<ProductDTO> getProductById(@PathVariable int id) throws ResourceNotFoundException {
         ProductDTO product = productService.getProductById(id);
         return ResponseEntity.ok(product);
     }
 
-    // POST
-    @PostMapping
+    @GetMapping("/featured")
+    ResponseEntity<List<ProductDTO>> getFeaturedProducts() {
+        List<ProductDTO> products = productService.getFeaturedProducts();
+        return ResponseEntity.ok(products);
+    }
+
+    @GetMapping("/categories")
+    public ResponseEntity<Map<String, List<ProductDTO>>> listarProductosPorCategoria() {
+        Map<String, List<ProductDTO>> productosPorCategoria = productService.obtenerProductosAgrupadosPorCategoria();
+        return ResponseEntity.ok(productosPorCategoria);
+    }
+
+    // CREATE
+    @PostMapping("/create")
     public ResponseEntity<ProductDTO> createProduct(@RequestBody ProductDTO product) {
         ProductDTO newProduct = productService.createProduct(product);
         return ResponseEntity.ok(newProduct);
     }
 
-    // PUT
-    @PutMapping
-    public ResponseEntity<ProductDTO> updateProduct(@RequestBody ProductDTO product) {
-        ProductDTO updatedProduct = productService.updateProduct(product);
+    // UPDATE
+    @PutMapping("/{id}")
+    public ResponseEntity<ProductDTO> updateProduct(@PathVariable Integer id, @RequestBody ProductDTO product) {
+        ProductDTO updatedProduct = productService.updateProduct(id, product);
         return ResponseEntity.ok(updatedProduct);
     }
 
     // DELETE
-    @DeleteMapping
-    public ResponseEntity<Void> deleteProduct(@PathVariable Integer id) {
-        productService.deleteProduct(id);
-        return ResponseEntity.noContent().build();
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteProduct(@PathVariable Integer id) {
+        try {
+            productService.deleteProduct(id);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body("Se elimino correctamente");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("El producto no existe ");
+        }
     }
 
 }

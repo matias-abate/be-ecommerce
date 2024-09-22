@@ -1,5 +1,6 @@
 package com.uade.tpo.g11.ecommerce.ecommerce.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -17,6 +18,7 @@ public class TransactionEntity {
 
     @OneToOne
     @JoinColumn(name = "order_id", nullable = false)
+    @JsonIgnore
     private OrderEntity order;
 
     @Column(name = "transaction_date")

@@ -84,4 +84,8 @@ public class TransactionService {
         transactionRepository.delete(transactionEntity);
     }
 
+    public List<TransactionEntity> getTransactionsByUserId(Integer userId) {
+        return transactionRepository.findAllByUserId(userId);
+    }
+
 }

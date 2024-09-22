@@ -1,6 +1,10 @@
 package com.uade.tpo.g11.ecommerce.ecommerce.entities;
 
+
 import com.fasterxml.jackson.annotation.JsonFormat;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.AllArgsConstructor;
@@ -24,7 +28,7 @@ public class UserEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private int userId;
+    private Integer userId;
 
     @Column(name = "username", nullable = false, length = 50)
     private String username;
@@ -50,7 +54,9 @@ public class UserEntity implements UserDetails {
     private RoleEntity role;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<OrderEntity> orders;
+
 
     @Override
     public List<GrantedAuthority> getAuthorities() {
@@ -63,4 +69,12 @@ public class UserEntity implements UserDetails {
     public String getUsername() {
         return this.email;
     }
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private WishlistEntity wishlist;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private CartEntity cart;
+
+
 }

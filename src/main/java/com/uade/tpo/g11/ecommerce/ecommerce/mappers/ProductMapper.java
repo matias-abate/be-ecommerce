@@ -2,8 +2,10 @@ package com.uade.tpo.g11.ecommerce.ecommerce.mappers;
 
 import com.uade.tpo.g11.ecommerce.ecommerce.dtos.OrderDetailDTO;
 import com.uade.tpo.g11.ecommerce.ecommerce.dtos.ProductDTO;
+import com.uade.tpo.g11.ecommerce.ecommerce.dtos.UserDTO;
 import com.uade.tpo.g11.ecommerce.ecommerce.entities.OrderDetailEntity;
 import com.uade.tpo.g11.ecommerce.ecommerce.entities.ProductEntity;
+import com.uade.tpo.g11.ecommerce.ecommerce.entities.UserEntity;
 import com.uade.tpo.g11.ecommerce.ecommerce.repositories.IOrderDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -35,6 +37,7 @@ public class ProductMapper {
                 .collect(Collectors.toList());
 
         productDTO.setOrderDetails(orderDetailsDTO);
+        productDTO.setFeatured(productEntity.isFeatured());
 
         return productDTO;
 
@@ -56,7 +59,29 @@ public class ProductMapper {
                     .map(orderDetailMapper::toEntity)
                     .collect(Collectors.toList());
             productEntity.setOrderDetails(orderDetailEntities);
+            productEntity.setFeatured(productDTO.isFeatured());
 
             return productEntity;
     }
+
+    public void updateEntityFromDTO(ProductDTO productDTO, ProductEntity productEntity) {
+        productEntity.setProductId(productDTO.getId());
+        productEntity.setName(productDTO.getName());
+        productEntity.setDescription(productDTO.getDescription());
+        productEntity.setImages(productDTO.getImages());
+        productEntity.setPrice(productDTO.getPrice());
+        productEntity.setStock(productDTO.getStock());
+        productEntity.setCategory(productDTO.getCategory());
+
+        List<OrderDetailEntity> orderDetails = productDTO.getOrderDetails().stream()
+                        .map(orderDetailMapper::toEntity)
+                        .collect(Collectors.toList());
+
+        productEntity.setOrderDetails(orderDetails);
+        productEntity.setFeatured(productDTO.isFeatured());
+
+    }
+
+
+
 }

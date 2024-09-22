@@ -1,10 +1,13 @@
 package com.uade.tpo.g11.ecommerce.ecommerce.controllers;
 
 import com.uade.tpo.g11.ecommerce.ecommerce.dtos.UserDTO;
+import com.uade.tpo.g11.ecommerce.ecommerce.entities.TransactionEntity;
+import com.uade.tpo.g11.ecommerce.ecommerce.services.TransactionService;
 import com.uade.tpo.g11.ecommerce.ecommerce.services.UserService;
 import lombok.AllArgsConstructor;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -16,6 +19,8 @@ public class UserController {
 
     @Autowired
     UserService userService;
+    @Autowired
+    TransactionService transactionService;
 
     @GetMapping
     public ResponseEntity<List<UserDTO>> getAllUsers() {
@@ -30,23 +35,34 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    @PostMapping
+
+    @PostMapping("register")
     public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO user) {
-        userService.createUser(user);
+        UserDTO newUser = userService.createUser(user);
+        return ResponseEntity.ok(newUser);
 
-        return ResponseEntity.noContent().build();
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     public ResponseEntity<UserDTO> updateUser(@PathVariable Integer id, @RequestBody UserDTO user) {
-        userService.updateUser(id, user);
-        return ResponseEntity.ok(user);
+        UserDTO updateUser = userService.updateUser(id, user);
+        return ResponseEntity.ok(updateUser);
     }
 
-    @DeleteMapping
-    public ResponseEntity<UserDTO> deleteUser(@PathVariable Integer id) {
-        userService.deleteUser(id);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable Integer id) {
+        try {
+            userService.deleteUser(id);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body("Se elimino correctamente");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("El usuario no existe ");
+        }
 
-        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{userId}/transactions")
+    public ResponseEntity<List<TransactionEntity>> getUserTransactions(@PathVariable Integer userId) {
+        List<TransactionEntity> transactions = transactionService.getTransactionsByUserId(userId);
+        return ResponseEntity.ok(transactions);
     }
 }

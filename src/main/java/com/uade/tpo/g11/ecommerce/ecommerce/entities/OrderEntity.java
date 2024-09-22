@@ -1,5 +1,6 @@
 package com.uade.tpo.g11.ecommerce.ecommerce.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.uade.tpo.g11.ecommerce.ecommerce.dtos.OrderDetailDTO;
 import com.uade.tpo.g11.ecommerce.ecommerce.dtos.TransactionDTO;
 import com.uade.tpo.g11.ecommerce.ecommerce.enums.OrderStatus;
@@ -21,6 +22,7 @@ public class OrderEntity {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
     private UserEntity user;
 
     @Column(name = "order_date")
@@ -37,6 +39,7 @@ public class OrderEntity {
     private List<OrderDetailEntity> orderDetails;
 
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+    @JsonIgnore
     private TransactionEntity transaction;
 
 }
