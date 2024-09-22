@@ -4,6 +4,7 @@ import com.uade.tpo.g11.ecommerce.ecommerce.dtos.UserDTO;
 import com.uade.tpo.g11.ecommerce.ecommerce.entities.TransactionEntity;
 import com.uade.tpo.g11.ecommerce.ecommerce.services.TransactionService;
 import com.uade.tpo.g11.ecommerce.ecommerce.services.UserService;
+import lombok.AllArgsConstructor;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/users")
+@AllArgsConstructor
 public class UserController {
 
     @Autowired
