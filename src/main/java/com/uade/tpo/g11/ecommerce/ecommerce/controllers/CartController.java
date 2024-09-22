@@ -23,15 +23,21 @@ public class CartController {
         return ResponseEntity.ok(carts);
     }
 
-    @GetMapping("/{cartId}")
+    /*@GetMapping("/{cartId}")
     public ResponseEntity<CartDTO> getCartById(@PathVariable int cartId){
         CartDTO cartOptional = cartService.getCartById(cartId);
         return ResponseEntity.ok(cartOptional);
+    }*/
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<CartDTO> getCart(@PathVariable Integer userId) {
+        CartDTO cartDTO = cartService.getCartById(userId);
+        return ResponseEntity.ok(cartDTO);
     }
 
-    @PostMapping("/{id}/{productId}/add")
+    @PostMapping("/{id}/add")
     public ResponseEntity<String> addProductToCart(@PathVariable Integer id,
-                                                   @PathVariable Integer productId,
+                                                   @RequestParam Integer productId,
                                                    @RequestParam int quantity) {
         String response = cartService.addProductToCart(id, productId, quantity);
         return ResponseEntity.ok(response);

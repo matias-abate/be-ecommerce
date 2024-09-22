@@ -10,7 +10,7 @@ public class CartItemMapper {
 
     public CartItemDTO toDTO(CartItemEntity cartItemEntity) {
         CartItemDTO cartItemDTO = new CartItemDTO();
-        //cartItemDTO.setProduct(cartItemEntity.getProduct());
+        //cartItemDTO.setProduct(toDTO(cartItemEntity.getProduct()));
         //int id = cartItemEntity.getProduct().getProductId();
         //cartItemDTO.setId(id);
         cartItemDTO.setQuantity(cartItemEntity.getQuantity());

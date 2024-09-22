@@ -55,14 +55,11 @@ public class CartService {
     }
 
     public CartDTO getCartById(Integer id){
-        Optional<CartEntity> cart = cartRepository.findById(id);
-
-        if(cart.isPresent()){
-            return cartMapper.toDTO((cart.get())); //
-        }else{
-            throw new RuntimeException("Carrito no encontrado");
-        }
+        CartEntity cart = cartRepository.findByUser_UserId(id)
+                .orElseThrow(() -> new RuntimeException("Cart not found"));
+        return cartMapper.toDTO(cart);
     }
+
 
     public String addProductToCart(Integer userId, int productId, int quantity) {
         UserEntity user = userRepository.findById(userId)
@@ -75,7 +72,7 @@ public class CartService {
             return "Insufficient stock for product: " + product.getName();
         }
 
-        CartEntity cart = cartRepository.findByUserId(userId).orElseGet(() -> {
+        CartEntity cart = cartRepository.findByUser_UserId(userId).orElseGet(() -> {
             CartEntity newCart = new CartEntity();
             newCart.setUser(user);
             return cartRepository.save(newCart);
@@ -94,6 +91,7 @@ public class CartService {
             cartItem.setCart(cart);
             cartItem.setQuantity(quantity);
             cart.getCartItems().add(cartItem);
+            //cartItemRepository.save(carItem);           I
         }
 
         product.setStock(product.getStock() - quantity);
