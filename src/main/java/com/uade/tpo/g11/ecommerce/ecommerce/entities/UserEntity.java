@@ -16,7 +16,7 @@ public class UserEntity {
     @Column(name = "user_id")
     private Integer userId;
 
-    @Column(name = "username", nullable = false, length = 50)
+    @Column(name = "username", unique = false, nullable = false, length = 50)
     private String username;
 
     @Column(name = "password", nullable = false, length = 255)
@@ -43,4 +43,5 @@ public class UserEntity {
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private CartEntity cart;
+
 }
