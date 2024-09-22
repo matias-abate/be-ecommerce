@@ -37,7 +37,11 @@ public class ProductEntity {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<OrderDetailEntity> orderDetails;
 
+    @OneToMany(mappedBy = "product")
+    private List<WishlistItemEntity> wishlistItems;
+
     @Column(name = "isFeatured", nullable = false)
     private boolean isFeatured = false;
+
 
 }

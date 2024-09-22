@@ -29,10 +29,12 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
+
     @PostMapping("register")
     public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO user) {
         UserDTO newUser = userService.createUser(user);
         return ResponseEntity.ok(newUser);
+
     }
 
     @PutMapping("/{id}")
