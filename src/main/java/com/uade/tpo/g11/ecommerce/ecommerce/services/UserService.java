@@ -5,6 +5,7 @@ import com.uade.tpo.g11.ecommerce.ecommerce.entities.UserEntity;
 import com.uade.tpo.g11.ecommerce.ecommerce.mappers.UserMapper;
 import com.uade.tpo.g11.ecommerce.ecommerce.repositories.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -44,42 +45,53 @@ public class UserService {
     }
 
     // CREATE
-    public void createUser(UserDTO userDTO) {
-        UserEntity userEntity = userMapper.toEntity(userDTO);
-        userRepository.save(userEntity);
+    public UserDTO createUser(UserDTO userDTO) {
+        try {
+            UserEntity userEntity = userMapper.toEntity(userDTO);
+            UserEntity savedUser = userRepository.save(userEntity);
+            return userMapper.toDTO(savedUser);
+        } catch (DataIntegrityViolationException e) {
+            throw new RuntimeException("Username: '" + userDTO.getUsername() + "' ya existe");
+        }
     }
+
 
 
     // UPDATE
-    public UserDTO updateUser(Integer id, UserDTO userDTO) {
-        Optional<UserEntity> existingUser = userRepository.findById(id);
-        UserDTO updatedUser = null;
-
-        if(existingUser.isPresent()) {
-            UserEntity userEntity = existingUser.get();
-
-            userEntity.setUsername(userDTO.getUsername());
-            userEntity.setEmail(userDTO.getEmail());
-            userEntity.setBirthDate(userDTO.getBirth());
-            userEntity.setRole(userDTO.getRole());
-            userEntity.setFirstname(userDTO.getFirstname());
-            userEntity.setLastname(userDTO.getLastname());
-
-            UserEntity user = userRepository.save(userEntity);
-            updatedUser = userMapper.toDTO(user);
-        }
-
-        return updatedUser;
+    public UserDTO updateUser(int id, UserDTO userDTO) {
+        UserEntity existingUser = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+        userMapper.updateEntityFromDTO(userDTO, existingUser);
+        UserEntity updatedUser = userRepository.save(existingUser);
+        return userMapper.toDTO(updatedUser);
     }
+//    public UserDTO updateUser(Integer id, UserDTO userDTO) {
+//
+//        Optional<UserEntity> existingUser = userRepository.findById(id);
+//        UserDTO updatedUser = null;
+//
+//        if(existingUser.isPresent()) {
+//            UserEntity userEntity = existingUser.get();
+//
+//            userEntity.setUsername(userDTO.getUsername());
+//            userEntity.setEmail(userDTO.getEmail());
+//            userEntity.setBirthDate(userDTO.getBirth());
+//            userEntity.setRole(userDTO.getRole());
+//            userEntity.setFirstname(userDTO.getFirstname());
+//            userEntity.setLastname(userDTO.getLastname());
+//
+//            UserEntity user = userRepository.save(userEntity);
+//            updatedUser = userMapper.toDTO(user);
+//        }
+//
+//        return updatedUser;
+//    }
 
 
     // DELETE
     public void deleteUser(Integer id) {
-        Optional<UserEntity> userEntity = userRepository.findById(id);
-
-        if(userEntity.isPresent()) {
-            userRepository.delete(userEntity.get());
-        }
+        UserEntity user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        userRepository.delete(user);
     }
 
 }

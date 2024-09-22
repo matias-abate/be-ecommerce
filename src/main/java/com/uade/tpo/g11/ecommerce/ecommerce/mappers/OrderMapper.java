@@ -33,7 +33,13 @@ public class OrderMapper {
         orderDTO.setOrderDate(orderEntity.getOrderDate());
         orderDTO.setStatus(orderEntity.getStatus());
         orderDTO.setTotalAmount(orderEntity.getTotalAmount());
-        orderDTO.setTransactionId(orderEntity.getTransaction().getTransactionId());
+
+        if (orderEntity.getTransaction() != null) {
+            orderDTO.setTransactionId(orderEntity.getTransaction().getTransactionId());
+        } else {
+            orderDTO.setTransactionId(orderEntity.getOrderId());
+        }
+
 
         List<OrderDetailDTO> orderDetails = orderEntity.getOrderDetails().stream()
                 .map(orderDetailMapper::toDTO)
