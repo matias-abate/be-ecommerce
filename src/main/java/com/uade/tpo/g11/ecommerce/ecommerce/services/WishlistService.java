@@ -6,6 +6,7 @@ import com.uade.tpo.g11.ecommerce.ecommerce.entities.ProductEntity;
 import com.uade.tpo.g11.ecommerce.ecommerce.entities.UserEntity;
 import com.uade.tpo.g11.ecommerce.ecommerce.entities.WishlistEntity;
 import com.uade.tpo.g11.ecommerce.ecommerce.entities.WishlistItemEntity;
+import com.uade.tpo.g11.ecommerce.ecommerce.exceptions.ProductAlreadyInWishListException;
 import com.uade.tpo.g11.ecommerce.ecommerce.mappers.WishlistItemMapper;
 import com.uade.tpo.g11.ecommerce.ecommerce.repositories.IProductRepository;
 import com.uade.tpo.g11.ecommerce.ecommerce.repositories.IUserRepository;
@@ -60,7 +61,7 @@ public class WishlistService {
 
 
     // Agregar un item a la lista
-    public void addWishlistItem(Integer userId, Integer productId) {
+    public List<WishlistItemDTO> addWishlistItem(Integer userId, Integer productId) {
         // 1. Verificamos que el usuario existe
         UserEntity userEntity = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User with id: " + userId + " not found"));
@@ -79,32 +80,31 @@ public class WishlistService {
                 .orElseThrow(() -> new RuntimeException("Product not found with id: " + productId));
 
         // 4. Verificamos si el producto ya está en la wishlist
-        List<WishlistItemEntity> wishlistItemEntities = wishlistEntity.getWishlistItems();
+        boolean productAlreadyInWishlist = wishlistEntity.getWishlistItems().stream()
+                .anyMatch(item -> item.getProduct().getProductId() == productId);
 
-        for (WishlistItemEntity wishlistItemEntity : wishlistItemEntities) {
-            if (wishlistItemEntity.getProduct().getProductId() == productId) {
-                throw new RuntimeException("Product already in wishlist");
-            }
+        if (productAlreadyInWishlist) {
+            throw new ProductAlreadyInWishListException("Product already in wishlist");
         }
-
 
         // 5. Si no está, creamos un nuevo WishlistItem y lo agregamos a la lista
         WishlistItemEntity wishlistItemEntity = new WishlistItemEntity();
         wishlistItemEntity.setWishlist(wishlistEntity);
         wishlistItemEntity.setProduct(productEntity);
-        wishlistItemEntities.add(wishlistItemEntity);
-        wishlistItemRepository.save(wishlistItemEntity);
+        wishlistItemEntity = wishlistItemRepository.save(wishlistItemEntity); // Guardamos el wishlist item en el repositorio
 
-        // 6. Guardamos los cambios en la DB
+        // 6. Agregamos el nuevo item a la lista y guardamos el wishlist actualizado
+        wishlistEntity.getWishlistItems().add(wishlistItemEntity);
         wishlistRepository.save(wishlistEntity);
 
-//        // 7. Convertimos la lista de wishlistItems a DTOs para poder retornarlos
-//        List<WishlistItemDTO> wishlistItemDTOS = wishlistItemEntities.stream()
-//                .map(wishlistItemMapper::toDTO)
-//                .collect(Collectors.toList());
+        // 7. Convertimos la lista de wishlistItems a DTOs para poder retornarlos
+        List<WishlistItemDTO> wishlistItemDTOS = wishlistEntity.getWishlistItems().stream()
+                .map(wishlistItemMapper::toDTO)
+                .collect(Collectors.toList());
 
-        //return wishlistItemDTOS;
+        return wishlistItemDTOS;
     }
+
 
     // Eliminar un producto de la wishlist
     public List<WishlistItemDTO> deleteItem(Integer userId, Integer productId) {

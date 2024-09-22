@@ -44,6 +44,7 @@ public class UserEntity {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private WishlistEntity wishlist;
 
-    
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private CartEntity cart;
 
 }

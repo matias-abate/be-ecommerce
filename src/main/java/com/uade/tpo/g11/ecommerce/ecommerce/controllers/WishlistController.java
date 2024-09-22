@@ -4,6 +4,7 @@ import com.uade.tpo.g11.ecommerce.ecommerce.dtos.ProductDTO;
 import com.uade.tpo.g11.ecommerce.ecommerce.dtos.WishlistDTO;
 import com.uade.tpo.g11.ecommerce.ecommerce.dtos.WishlistItemDTO;
 import com.uade.tpo.g11.ecommerce.ecommerce.entities.WishlistEntity;
+import com.uade.tpo.g11.ecommerce.ecommerce.exceptions.ProductAlreadyInWishListException;
 import com.uade.tpo.g11.ecommerce.ecommerce.services.ProductService;
 import com.uade.tpo.g11.ecommerce.ecommerce.services.UserService;
 import com.uade.tpo.g11.ecommerce.ecommerce.services.WishlistService;
@@ -35,11 +36,15 @@ public class WishlistController {
     }
 
     @PostMapping("/add")
-    public void addWishlistItem(@RequestParam Integer userId, @RequestParam Integer productId) {
-        wishlistService.addWishlistItem(userId, productId);
-
-        // TO DO -> Fix WishlistItemMapper and return a ResponseEntity to the controller and then to the client
+    public ResponseEntity<?> addWishListItem(@RequestParam Integer userId, @RequestParam Integer productId) {
+        try {
+            List<WishlistItemDTO> wishListItemDTOS = wishlistService.addWishlistItem(userId, productId);
+            return ResponseEntity.ok(wishListItemDTOS);
+        } catch (ProductAlreadyInWishListException ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("El producto ya se encuentra en favoritos");
+        }
     }
+
 
     @DeleteMapping("/delete")
     public ResponseEntity<List<WishlistItemDTO>> deleteWishlistItem(@RequestParam Integer userId, @RequestParam Integer productId) {
