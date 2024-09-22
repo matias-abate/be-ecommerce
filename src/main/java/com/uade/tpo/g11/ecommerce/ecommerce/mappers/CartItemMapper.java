@@ -9,12 +9,11 @@ import org.springframework.stereotype.Component;
 public class CartItemMapper {
 
     public CartItemDTO toDTO(CartItemEntity cartItemEntity) {
-        CartItemDTO cartItemDTO = new CartItemDTO();
-        //cartItemDTO.setProduct(toDTO(cartItemEntity.getProduct()));
-        //int id = cartItemEntity.getProduct().getProductId();
-        //cartItemDTO.setId(id);
-        cartItemDTO.setQuantity(cartItemEntity.getQuantity());
-        return cartItemDTO;
+        CartItemDTO dto = new CartItemDTO();
+        dto.setId(cartItemEntity.getCartItemId());
+        dto.setProduct(cartItemEntity.getProduct().getProductId());
+        dto.setQuantity(cartItemEntity.getQuantity());
+        return dto;
     }
 
     public CartItemEntity toEntity(CartItemDTO cartItemDTO) {

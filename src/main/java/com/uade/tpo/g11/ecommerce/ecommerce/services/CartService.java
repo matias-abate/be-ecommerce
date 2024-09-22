@@ -61,7 +61,7 @@ public class CartService {
     }
 
 
-    public String addProductToCart(Integer userId, int productId, int quantity) {
+    public CartDTO addProductToCart(Integer userId, int productId, int quantity) {
         UserEntity user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -69,7 +69,7 @@ public class CartService {
                 .orElseThrow(() -> new RuntimeException("Product not found"));
 
         if (product.getStock() < quantity) {
-            return "Insufficient stock for product: " + product.getName();
+            throw new RuntimeException("Insufficient stock for product: " + product.getName());
         }
 
         CartEntity cart = cartRepository.findByUser_UserId(userId).orElseGet(() -> {
@@ -82,24 +82,29 @@ public class CartService {
                 .filter(item -> item.getProduct().getProductId() == productId)
                 .findFirst();
 
+        CartItemEntity cartItem;
         if (existingCartItem.isPresent()) {
-            CartItemEntity cartItem = existingCartItem.get();
+            cartItem = existingCartItem.get();
             cartItem.setQuantity(cartItem.getQuantity() + quantity);
         } else {
-            CartItemEntity cartItem = new CartItemEntity();
+            cartItem = new CartItemEntity();
             cartItem.setProduct(product);
             cartItem.setCart(cart);
             cartItem.setQuantity(quantity);
             cart.getCartItems().add(cartItem);
-            //cartItemRepository.save(carItem);           I
         }
 
+        cartItemRepository.save(cartItem);
         product.setStock(product.getStock() - quantity);
         productRepository.save(product);
         cartRepository.save(cart);
 
-        return "Product added to cart successfully";
+        return cartMapper.toDTO(cart); // Devuelve el carrito actualizado como CartDTO
     }
+
+
+
+
     // Metodo para agregar un producto al carrito
     /*public CarItemDTO addProductToCart(int cartId, int productId, int quantity) {
         CartEntity cart = cartRepository.findById(cartId).orElseThrow(() -> new RuntimeException("Carrito no encontrado"));
