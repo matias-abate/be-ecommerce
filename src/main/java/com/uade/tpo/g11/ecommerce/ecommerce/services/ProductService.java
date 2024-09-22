@@ -6,7 +6,7 @@ import com.uade.tpo.g11.ecommerce.ecommerce.entities.ProductEntity;
 import com.uade.tpo.g11.ecommerce.ecommerce.exceptions.ResourceNotFoundException;
 import com.uade.tpo.g11.ecommerce.ecommerce.mappers.OrderDetailMapper;
 import com.uade.tpo.g11.ecommerce.ecommerce.mappers.ProductMapper;
-import com.uade.tpo.g11.ecommerce.ecommerce.mappers.repositories.IProductRepository;
+import com.uade.tpo.g11.ecommerce.ecommerce.repositories.IProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
