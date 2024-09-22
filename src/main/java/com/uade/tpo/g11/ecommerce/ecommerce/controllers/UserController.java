@@ -32,7 +32,7 @@ public class UserController {
     public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO user) {
         userService.createUser(user);
 
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(user);
     }
 
     @PutMapping

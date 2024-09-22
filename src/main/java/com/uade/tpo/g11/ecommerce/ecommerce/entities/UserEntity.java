@@ -42,5 +42,8 @@ public class UserEntity {
     private List<OrderEntity> orders;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private CartEntity cart;
+    private WishlistEntity wishlist;
+
+    
+
 }
