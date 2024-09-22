@@ -33,11 +33,10 @@ public class OrderMapper {
         orderDTO.setOrderDate(orderEntity.getOrderDate());
         orderDTO.setStatus(orderEntity.getStatus());
         orderDTO.setTotalAmount(orderEntity.getTotalAmount());
-        // Verificar si la transacción es null antes de acceder a su ID
+
         if (orderEntity.getTransaction() != null) {
             orderDTO.setTransactionId(orderEntity.getTransaction().getTransactionId());
         } else {
-            // Manejar el caso en que la transacción es null, puedes dejarlo como null o un valor predeterminado
             orderDTO.setTransactionId(orderEntity.getOrderId());
         }
 

@@ -28,6 +28,9 @@ public class CartService {
     CartMapper cartMapper;
 
     @Autowired
+    ITransactionRepository transactionRepository;
+
+    @Autowired
     OrderMapper orderMapper;
 
     @Autowired
@@ -112,6 +115,7 @@ public class CartService {
         //product.setStock(product.getStock() - quantity);
         productRepository.save(product);
         cartRepository.save(cart);
+
 
         return cartMapper.toDTO(cart); // Devuelve el carrito actualizado como CartDTO
     }
@@ -226,47 +230,8 @@ public class CartService {
         savedOrder.setStatus("COMPLETED");
         orderRepository.save(savedOrder);
 
+
         return orderMapper.toDTO(savedOrder);
     }
-
-
-    /*
-
-    // Metodo para obtener el total del carrito
-    public BigDecimal calculateCartTotal(Long cartId) {
-        List<CarItem> carItems = carItemRepository.findByCartId(cartId);
-        return carItems.stream()
-                .map(CarItem::getTotalPrice)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-    }
-
-    // Metodo para realizar el checkout
-    public String checkoutCart(Long userId) {
-        CartEntity cart = cartRepository.findByUserId(userId).orElseThrow(() -> new RuntimeException("Carrito no encontrado para el usuario"));
-
-        List<CarItemDTO> cartItems = cartService.getCartItemsByCartId(cart.getId());
-
-        BigDecimal total = BigDecimal.ZERO;
-        StringBuilder stockIssues = new StringBuilder();
-
-        for (CarItemDTO carItem : cartItems) {
-            ProductEntity product = productRepository.findById(carItem.getProductId())
-                    .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
-
-            // Verificar stock
-            if (product.getStock() < carItem.getQuantity()) {
-                stockIssues.append("El producto ").append(product.getName()).append(" no tiene stock suficiente. ");
-            } else {
-                // Restar el stock y agregar al total
-                product.setStock(product.getStock() - carItem.getQuantity());
-                productRepository.save(product);
-                total = total.add(carItem.getTotalPrice());
-            }
-    }
-
-    if (stockIssues.length() > 0) {
-        return stockIssues.toString();
-    }
-}*/
 
 }

@@ -1,8 +1,12 @@
 package com.uade.tpo.g11.ecommerce.ecommerce.services;
 
+import com.uade.tpo.g11.ecommerce.ecommerce.dtos.OrderDTO;
 import com.uade.tpo.g11.ecommerce.ecommerce.dtos.UserDTO;
+import com.uade.tpo.g11.ecommerce.ecommerce.entities.TransactionEntity;
 import com.uade.tpo.g11.ecommerce.ecommerce.entities.UserEntity;
+import com.uade.tpo.g11.ecommerce.ecommerce.mappers.OrderMapper;
 import com.uade.tpo.g11.ecommerce.ecommerce.mappers.UserMapper;
+import com.uade.tpo.g11.ecommerce.ecommerce.repositories.IOrderRepository;
 import com.uade.tpo.g11.ecommerce.ecommerce.repositories.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,9 +20,13 @@ public class UserService {
 
     @Autowired
     IUserRepository userRepository;
+    @Autowired
+    IOrderRepository orderRepository;
 
     @Autowired
     UserMapper userMapper;
+    @Autowired
+    private OrderMapper orderMapper;
 
     @Autowired
     public UserService(IUserRepository userRepository) {
@@ -86,5 +94,12 @@ public class UserService {
             userRepository.delete(userEntity.get());
         }
     }
+
+   /* public List<OrderDTO> getUserCheckoutHistory(Integer userId) {
+        List<TransactionEntity> transactions = transactionRepository.findByUserUserId(userId);
+        return transactions.stream()
+                .map(orderMapper::toDTO)
+                .collect(Collectors.toList());
+    }*/
 
 }
