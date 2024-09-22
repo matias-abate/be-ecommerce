@@ -35,6 +35,7 @@ public class CartController {
         return ResponseEntity.ok(cartDTO);
     }
 
+    //Agregar un producto al carrito de un usuario
     @PostMapping("/{id}/add")
     public ResponseEntity<CartDTO> addProductToCart(@PathVariable Integer id,
                                                     @RequestParam Integer productId,
@@ -43,17 +44,23 @@ public class CartController {
         return ResponseEntity.ok(response);
     }
 
-    // Metodo para agregar un producto al carrito
-    /*@PostMapping("/{cartId}/products/{productId}")
-    public ResponseEntity<CarItemDTO> addProductToCart(
-            @PathVariable Long cartId,
-            @PathVariable Long productId,
-            @RequestParam int quantity) {
-
-        CarItemDTO carItemDTO = cartService.addProductToCart(cartId, productId, quantity);
-        return ResponseEntity.ok(carItemDTO);
+    // Vaciar carrito del usuario
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<CartDTO> clearCart(@PathVariable Integer userId) {
+        CartDTO response = cartService.clearCart(userId);
+        return ResponseEntity.ok(response);
     }
 
+    //Eliminar un producto del carrito
+    @DeleteMapping("/{userId}/items/{productId}")
+    public ResponseEntity<CartDTO> removeProductFromCart(
+            @PathVariable Integer userId,
+            @PathVariable Integer productId) {
+
+        CartDTO updatedCart = cartService.removeProductFromCart(userId, productId);
+        return ResponseEntity.ok(updatedCart);
+    }
+/*
     // Metodo para calcular el total del carrito
     @GetMapping("/{cartId}/total")
     public ResponseEntity<BigDecimal> calculateCartTotal(@PathVariable Long cartId) {
@@ -80,10 +87,5 @@ public class CartController {
         return ResponseEntity.noContent().build();
     }
 
-    // Endpoint para vaciar el carrito
-    @DeleteMapping("/{userId}")
-    public ResponseEntity<Void> clearCart(@PathVariable Long userId) {
-        cartService.clearCart(userId);
-        return ResponseEntity.noContent().build();
-    }*/
+    */
 }

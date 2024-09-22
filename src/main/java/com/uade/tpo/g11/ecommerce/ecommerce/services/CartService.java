@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -54,13 +55,14 @@ public class CartService {
         return cartDTOS;
     }
 
+
     public CartDTO getCartById(Integer id){
         CartEntity cart = cartRepository.findByUser_UserId(id)
                 .orElseThrow(() -> new RuntimeException("Cart not found"));
         return cartMapper.toDTO(cart);
     }
 
-
+    //agregar un producto al carrito de un usuario
     public CartDTO addProductToCart(Integer userId, int productId, int quantity) {
         UserEntity user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -77,6 +79,10 @@ public class CartService {
             newCart.setUser(user);
             return cartRepository.save(newCart);
         });
+
+        if (cart.getCartItems() == null) {
+            cart.setCartItems(new ArrayList<>());
+        }
 
         Optional<CartItemEntity> existingCartItem = cart.getCartItems().stream()
                 .filter(item -> item.getProduct().getProductId() == productId)
@@ -95,28 +101,55 @@ public class CartService {
         }
 
         cartItemRepository.save(cartItem);
-        product.setStock(product.getStock() - quantity);
+        //product.setStock(product.getStock() - quantity);
         productRepository.save(product);
         cartRepository.save(cart);
 
         return cartMapper.toDTO(cart); // Devuelve el carrito actualizado como CartDTO
     }
 
+    //vaciar carrito
+    public CartDTO clearCart(Integer userId) {
+        CartEntity cart = cartRepository.findByUser_UserId(userId)
+                .orElseThrow(() -> new RuntimeException("Carrito no encontrado para el usuario con ID: " + userId));
 
+        cartItemRepository.deleteAll(cart.getCartItems());
+        cart.getCartItems().clear();
 
-
-    // Metodo para agregar un producto al carrito
-    /*public CarItemDTO addProductToCart(int cartId, int productId, int quantity) {
-        CartEntity cart = cartRepository.findById(cartId).orElseThrow(() -> new RuntimeException("Carrito no encontrado"));
-        ProductEntity product = productRepository.findById(productId).orElseThrow(() -> new RuntimeException("Producto no encontrado"));
-
-        // Crear el CarItem y guardarlo
-        CarItem carItem = new CarItem(cart, product, quantity);
-        CarItem savedCarItem = ICartRepository.save(carItem);
-
-        // Devolver el DTO del CarItem guardado
-        return carItemMapper.toDTO(savedCarItem);
+        cartRepository.save(cart);
+        return cartMapper.toDTO(cart);
     }
+
+    //Eliminar un producto del carrito
+    public CartDTO removeProductFromCart(Integer userId, Integer productId) {
+        // Buscar el carrito del usuario
+        CartEntity cart = cartRepository.findByUser_UserId(userId)
+                .orElseThrow(() -> new RuntimeException("Carrito no encontrado para el usuario con ID: " + userId));
+
+        // Buscar el item correspondiente al producto en el carrito
+        CartItemEntity cartItem = cart.getCartItems().stream()
+                .filter(item -> item.getProduct().getProductId()==productId)
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado en el carrito"));
+
+        if (cartItem.getQuantity() > 1) {
+            cartItem.setQuantity(cartItem.getQuantity() - 1);
+            cartItemRepository.save(cartItem); // Guardar cambios
+        } else {
+            cart.getCartItems().remove(cartItem);
+            cartItemRepository.delete(cartItem); // Eliminar si la cantidad es 1
+        }
+
+        cartRepository.save(cart);
+
+        return cartMapper.toDTO(cart);
+    }
+
+    //checkout del carrito
+
+
+
+    /*
 
     // Metodo para obtener el total del carrito
     public BigDecimal calculateCartTotal(Long cartId) {
@@ -152,32 +185,6 @@ public class CartService {
 
     if (stockIssues.length() > 0) {
         return stockIssues.toString();
-    }
-
-    // Metodo para eliminar un producto del carrito
-    public void removeProductFromCart(Long userId, Long productId) {
-        // Buscar el carrito del usuario
-        CartEntity cart = cartRepository.findByUserId(userId).orElseThrow(() -> new RuntimeException("Carrito no encontrado para el usuario"));
-
-        // Verificar si el producto está en el carrito
-        CarItem carItem = carItemRepository.findByCartIdAndProductId(cart.getId(), productId)
-                .orElseThrow(() -> new RuntimeException("Producto no encontrado en el carrito"));
-
-        // Eliminar el CarItem del carrito
-        carItemRepository.delete(carItem);
-    }
-
-    // Metodo para vaciar el carrito
-    public void clearCart(Long userId) {
-        // Buscar el carrito del usuario
-        CartEntity cart = cartRepository.findByUserId(userId)
-                .orElseThrow(() -> new RuntimeException("Carrito no encontrado para el usuario"));
-
-        // Obtener todos los CarItems asociados al carrito
-        List<CarItem> carItems = carItemRepository.findByCartId(cart.getId());
-
-        // Eliminar todos los CarItems
-        carItemRepository.deleteAll(carItems);
     }
 }*/
 
