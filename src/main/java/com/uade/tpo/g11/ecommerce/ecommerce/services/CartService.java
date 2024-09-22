@@ -35,6 +35,7 @@ public class CartService {
 
     @Autowired
     ICartItemRepository cartItemRepository;
+
     @Autowired
     private UserService userService;
 
@@ -74,7 +75,7 @@ public class CartService {
             return "Insufficient stock for product: " + product.getName();
         }
 
-        CartEntity cart = cartRepository.findByUser_Id(userId).orElseGet(() -> {
+        CartEntity cart = cartRepository.findByUserId(userId).orElseGet(() -> {
             CartEntity newCart = new CartEntity();
             newCart.setUser(user);
             return cartRepository.save(newCart);
