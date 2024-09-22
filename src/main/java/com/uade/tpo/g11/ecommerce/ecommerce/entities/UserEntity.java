@@ -1,5 +1,6 @@
 package com.uade.tpo.g11.ecommerce.ecommerce.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -39,6 +40,7 @@ public class UserEntity {
     private String role;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<OrderEntity> orders;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)

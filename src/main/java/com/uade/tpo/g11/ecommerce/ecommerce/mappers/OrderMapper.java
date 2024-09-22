@@ -40,7 +40,6 @@ public class OrderMapper {
             orderDTO.setTransactionId(orderEntity.getOrderId());
         }
 
-
         List<OrderDetailDTO> orderDetails = orderEntity.getOrderDetails().stream()
                 .map(orderDetailMapper::toDTO)
                 .collect(Collectors.toList());

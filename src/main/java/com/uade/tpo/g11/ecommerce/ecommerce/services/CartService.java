@@ -176,7 +176,6 @@ public class CartService {
         order.setOrderDate(LocalDate.now());
         order.setStatus("PENDING"); // Inicialmente en estado pendiente
 
-
         List<ProductEntity> productsToUpdate = new ArrayList<>();
 
         // Iterar sobre los ítems del carrito
@@ -230,8 +229,20 @@ public class CartService {
         savedOrder.setStatus("COMPLETED");
         orderRepository.save(savedOrder);
 
+        // Crear una nueva transacción para la orden
+        TransactionEntity transaction = new TransactionEntity();
+        transaction.setOrder(savedOrder); // Asignar la orden a la transacción
+        transaction.setTransactionDate(LocalDate.now()); // Fecha de la transacción
+        transaction.setAmount(totalCost); // Monto total de la transacción
+        transaction.setPaymentMethod("CREDIT_CARD"); // Puedes ajustar este valor según tu lógica de negocio
+        transaction.setStatus("SUCCESS"); // Estado de la transacción
 
+        // Guardar la transacción en la base de datos
+        transactionRepository.save(transaction);
+
+        // Retornar la orden convertida a DTO
         return orderMapper.toDTO(savedOrder);
     }
+
 
 }

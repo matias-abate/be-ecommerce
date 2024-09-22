@@ -1,6 +1,8 @@
 package com.uade.tpo.g11.ecommerce.ecommerce.controllers;
 
 import com.uade.tpo.g11.ecommerce.ecommerce.dtos.UserDTO;
+import com.uade.tpo.g11.ecommerce.ecommerce.entities.TransactionEntity;
+import com.uade.tpo.g11.ecommerce.ecommerce.services.TransactionService;
 import com.uade.tpo.g11.ecommerce.ecommerce.services.UserService;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,8 @@ public class UserController {
 
     @Autowired
     UserService userService;
+    @Autowired
+    TransactionService transactionService;
 
     @GetMapping
     public ResponseEntity<List<UserDTO>> getAllUsers() {
@@ -52,5 +56,11 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("El usuario no existe ");
         }
 
+    }
+
+    @GetMapping("/{userId}/transactions")
+    public ResponseEntity<List<TransactionEntity>> getUserTransactions(@PathVariable Integer userId) {
+        List<TransactionEntity> transactions = transactionService.getTransactionsByUserId(userId);
+        return ResponseEntity.ok(transactions);
     }
 }
