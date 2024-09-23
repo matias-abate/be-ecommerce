@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import com.uade.tpo.g11.ecommerce.ecommerce.dtos.UserInfoDTO;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.AllArgsConstructor;
@@ -76,5 +77,14 @@ public class UserEntity implements UserDetails {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private CartEntity cart;
 
-
+    public UserInfoDTO toDto() {
+        return UserInfoDTO.builder()
+                .id(this.userId)
+                .email(this.email)
+                .firstname(this.firstname)
+                .lastname(this.lastname)
+                .dateOfBirth(this.birthDate)
+                .build();
+    }
 }
+

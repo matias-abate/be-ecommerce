@@ -2,12 +2,15 @@ package com.uade.tpo.g11.ecommerce.ecommerce.services;
 
 import com.uade.tpo.g11.ecommerce.ecommerce.dtos.LoginRequestDTO;
 import com.uade.tpo.g11.ecommerce.ecommerce.dtos.LoginResponseDTO;
+import com.uade.tpo.g11.ecommerce.ecommerce.dtos.UserInfoDTO;
 import com.uade.tpo.g11.ecommerce.ecommerce.repositories.IUserRepository;
 import com.uade.tpo.g11.ecommerce.ecommerce.controllers.auth.*;
 import com.uade.tpo.g11.ecommerce.ecommerce.entities.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -66,4 +69,14 @@ public class AuthenticationService {
                 .accessToken(jwtToken)
                 .build();
     }
+
+    public UserEntity getAuthenticatedUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return (UserEntity) authentication.getPrincipal();
+    }
+
+    public UserInfoDTO getUserInfo() {
+        return getAuthenticatedUser().toDto();
+    }
 }
+
