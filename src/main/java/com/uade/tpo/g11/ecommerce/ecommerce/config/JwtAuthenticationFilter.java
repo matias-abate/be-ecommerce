@@ -1,5 +1,8 @@
 package com.uade.tpo.g11.ecommerce.ecommerce.config;
+import com.uade.tpo.g11.ecommerce.ecommerce.exceptions.GenericException;
+import com.uade.tpo.g11.ecommerce.ecommerce.exceptions.JwtFilterException;
 import com.uade.tpo.g11.ecommerce.ecommerce.services.JwtService;
+import io.jsonwebtoken.MalformedJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,12 +16,14 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.io.IOException;
 
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
+    private final HandlerExceptionResolver handlerExceptionResolver;
 
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
@@ -34,6 +39,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
+        try {
         jwt = authHeader.substring(7);
         userEmail = jwtService.extractUsername(jwt); //
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -51,5 +57,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request, response);
 
+        } catch (Exception exception) {
+        logger.warn(exception);
+        if (exception.getClass() == MalformedJwtException.class) {
+            handlerExceptionResolver.resolveException(request, response, null, new JwtFilterException("Invalid token."));
+        }
+        handlerExceptionResolver.resolveException(request, response, null, new GenericException("Error: ", exception));
+
     }
+}
 }

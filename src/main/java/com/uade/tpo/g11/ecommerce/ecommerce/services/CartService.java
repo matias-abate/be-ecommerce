@@ -4,6 +4,7 @@ import com.uade.tpo.g11.ecommerce.ecommerce.dtos.CartDTO;
 import com.uade.tpo.g11.ecommerce.ecommerce.dtos.OrderDTO;
 import com.uade.tpo.g11.ecommerce.ecommerce.dtos.OrderDetailDTO;
 import com.uade.tpo.g11.ecommerce.ecommerce.entities.*;
+import com.uade.tpo.g11.ecommerce.ecommerce.exceptions.BadRequestException;
 import com.uade.tpo.g11.ecommerce.ecommerce.mappers.CartMapper;
 import com.uade.tpo.g11.ecommerce.ecommerce.mappers.OrderMapper;
 import com.uade.tpo.g11.ecommerce.ecommerce.repositories.*;

@@ -1,4 +1,4 @@
-package com.uade.beappsint.exception;
+package com.uade.tpo.g11.ecommerce.ecommerce.exceptions;
 
 import org.hibernate.HibernateException;
 
