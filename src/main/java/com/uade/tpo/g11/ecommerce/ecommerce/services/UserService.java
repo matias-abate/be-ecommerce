@@ -23,7 +23,7 @@ public class UserService {
 
     // READ
     public List<UserDTO> getAllUsers() {
-        List<UserEntity> usersEntities = userRepository.findAll();
+        List<UserEntity> usersEntities = (List<UserEntity>) userRepository.findAll();
 
         List<UserDTO> userDTOs = usersEntities.stream()
                 .map(userMapper::toDTO)
