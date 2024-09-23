@@ -25,7 +25,7 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     public AuthenticationResponse register(RegisterRequest request) {
-        if (IUserRepository.existsByEmail(request.getEmail())) throw new UserAlreadyExistsException(request.getEmail());
+        // if (IUserRepository.existsByEmail(request.getEmail())) throw new UserAlreadyExistsException(request.getEmail());
         if (request.getPassword() == null) throw new BadRequestException("Password is required");
 
         var user = UserEntity.builder()
