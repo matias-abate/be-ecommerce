@@ -52,7 +52,7 @@ public class AuthenticationService {
                         request.getPassword()
                 )
         );
-
+//a
         var user = repository.findByEmail(request.getEmail())
                 .orElseThrow();
 
