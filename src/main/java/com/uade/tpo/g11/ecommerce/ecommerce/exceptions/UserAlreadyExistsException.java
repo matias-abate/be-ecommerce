@@ -11,3 +11,4 @@ public class UserAlreadyExistsException extends HibernateException {
         return super.getMessage();
     }
 }
+//s
