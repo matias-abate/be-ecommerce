@@ -38,6 +38,6 @@ public class ProductEntity {
     private List<OrderDetailEntity> orderDetails;
 
     @Column(name = "isFeatured", nullable = false)
-    private boolean isFeatured = false;
+    private boolean isFeatured;
 
 }

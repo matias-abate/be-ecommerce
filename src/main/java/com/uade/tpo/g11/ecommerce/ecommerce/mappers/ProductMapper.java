@@ -72,13 +72,13 @@ public class ProductMapper {
         productEntity.setPrice(productDTO.getPrice());
         productEntity.setStock(productDTO.getStock());
         productEntity.setCategory(productDTO.getCategory());
-
+        productEntity.setFeatured(productDTO.isFeatured());
         List<OrderDetailEntity> orderDetails = productDTO.getOrderDetails().stream()
                         .map(orderDetailMapper::toEntity)
                         .collect(Collectors.toList());
 
         productEntity.setOrderDetails(orderDetails);
-        productEntity.setFeatured(productDTO.isFeatured());
+
 
     }
 
