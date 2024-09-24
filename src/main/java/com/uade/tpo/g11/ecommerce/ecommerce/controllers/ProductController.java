@@ -1,6 +1,7 @@
 package com.uade.tpo.g11.ecommerce.ecommerce.controllers;
 
 import com.uade.tpo.g11.ecommerce.ecommerce.dtos.ProductDTO;
+import com.uade.tpo.g11.ecommerce.ecommerce.exceptions.GlobalExceptionHandler;
 import com.uade.tpo.g11.ecommerce.ecommerce.exceptions.ResourceNotFoundException;
 import com.uade.tpo.g11.ecommerce.ecommerce.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,25 +22,30 @@ public class ProductController {
 
     // GET ALL
     @GetMapping
-    public ResponseEntity<List<ProductDTO>> getAllProducts() {
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    public ResponseEntity<?> getAllProducts() {
         List<ProductDTO> products = productService.getAllProducts();
         return ResponseEntity.ok(products);
     }
 
     // GET BY ID
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public ResponseEntity<ProductDTO> getProductById(@PathVariable int id) throws ResourceNotFoundException {
         ProductDTO product = productService.getProductById(id);
         return ResponseEntity.ok(product);
     }
 
     @GetMapping("/featured")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     ResponseEntity<List<ProductDTO>> getFeaturedProducts() {
         List<ProductDTO> products = productService.getFeaturedProducts();
         return ResponseEntity.ok(products);
     }
 
     @GetMapping("/categories")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public ResponseEntity<Map<String, List<ProductDTO>>> listarProductosPorCategoria() {
         Map<String, List<ProductDTO>> productosPorCategoria = productService.obtenerProductosAgrupadosPorCategoria();
         return ResponseEntity.ok(productosPorCategoria);
@@ -47,6 +53,7 @@ public class ProductController {
 
     // CREATE
     @PostMapping("/create")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ProductDTO> createProduct(@RequestBody ProductDTO product) {
         ProductDTO newProduct = productService.createProduct(product);
         return ResponseEntity.ok(newProduct);
@@ -54,6 +61,7 @@ public class ProductController {
 
     // UPDATE
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ProductDTO> updateProduct(@PathVariable Integer id, @RequestBody ProductDTO product) {
         ProductDTO updatedProduct = productService.updateProduct(id, product);
         return ResponseEntity.ok(updatedProduct);
@@ -61,6 +69,7 @@ public class ProductController {
 
     // DELETE
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> deleteProduct(@PathVariable Integer id) {
         try {
             productService.deleteProduct(id);

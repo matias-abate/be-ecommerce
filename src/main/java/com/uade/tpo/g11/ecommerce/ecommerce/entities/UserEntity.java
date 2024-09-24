@@ -62,7 +62,7 @@ public class UserEntity implements UserDetails {
     @Override
     public List<GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(role.name())); // Usa el Enum 'role'
+        authorities.add(new SimpleGrantedAuthority( "ROLE_" +role.name())); // Usa el Enum 'role'
         return authorities;
     }
 

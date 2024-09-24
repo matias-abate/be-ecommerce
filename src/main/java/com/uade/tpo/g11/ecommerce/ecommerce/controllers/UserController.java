@@ -9,6 +9,7 @@ import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -23,6 +24,7 @@ public class UserController {
     TransactionService transactionService;
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<List<UserDTO>> getAllUsers() {
         List<UserDTO> users = userService.getAllUsers();
 
@@ -30,6 +32,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public ResponseEntity<UserDTO> getUserById(@PathVariable int id) {
         UserDTO user = userService.getUserById(id);
         return ResponseEntity.ok(user);
@@ -37,6 +40,7 @@ public class UserController {
 
 
     @PostMapping("register")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO user) {
         UserDTO newUser = userService.createUser(user);
         return ResponseEntity.ok(newUser);
@@ -44,12 +48,14 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public ResponseEntity<UserDTO> updateUser(@PathVariable Integer id, @RequestBody UserDTO user) {
         UserDTO updateUser = userService.updateUser(id, user);
         return ResponseEntity.ok(updateUser);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<?> deleteUser(@PathVariable Integer id) {
         try {
             userService.deleteUser(id);
@@ -61,6 +67,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/transactions")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<List<TransactionEntity>> getUserTransactions(@PathVariable Integer userId) {
         List<TransactionEntity> transactions = transactionService.getTransactionsByUserId(userId);
         return ResponseEntity.ok(transactions);

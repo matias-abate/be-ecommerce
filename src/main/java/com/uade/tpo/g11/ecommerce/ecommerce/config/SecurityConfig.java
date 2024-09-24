@@ -32,7 +32,12 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req -> req.requestMatchers("/api/v1/auth/**").permitAll()
-                        .requestMatchers("/api/v1/users/**").hasAnyAuthority(RoleEntity.ADMIN.name())
+                        .requestMatchers("/users/**").hasAnyAuthority("ROLE_" +RoleEntity.ADMIN.name())
+                        .requestMatchers("/cart/**").hasAnyAuthority("ROLE_" +RoleEntity.USER.name())
+                        .requestMatchers("/wishlist/**").hasAnyAuthority("ROLE_" +RoleEntity.USER.name())
+                        .requestMatchers("/orders/**").permitAll()
+                        .requestMatchers("/transactions/**").permitAll()
+                        .requestMatchers("/orderdetails/**").permitAll()
                         .anyRequest()
                         .authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))

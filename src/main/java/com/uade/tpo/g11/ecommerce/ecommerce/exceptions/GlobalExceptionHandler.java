@@ -3,6 +3,7 @@ package com.uade.tpo.g11.ecommerce.ecommerce.exceptions;
 import org.hibernate.HibernateException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -23,6 +24,13 @@ public class GenericException extends HibernateException {
     public GenericException(String message, Exception e) {
         super(message);
         this.exception = e;
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<String> handleAccessDeniedException(AccessDeniedException ex) {
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .body("No tienes permiso para acceder a este recurso");
     }
 
     public String getMessage() {
