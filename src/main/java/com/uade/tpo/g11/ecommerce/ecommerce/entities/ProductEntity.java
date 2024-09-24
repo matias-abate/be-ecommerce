@@ -41,7 +41,7 @@ public class ProductEntity {
     private List<WishlistItemEntity> wishlistItems;
 
     @Column(name = "isFeatured", nullable = false)
-    private boolean isFeatured = false;
+    private boolean isFeatured;
 
 
 }

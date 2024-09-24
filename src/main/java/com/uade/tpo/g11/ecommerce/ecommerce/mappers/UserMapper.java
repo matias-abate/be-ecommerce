@@ -45,6 +45,10 @@ public class UserMapper {
         userEntity.setLastname(userDTO.getLastname());
         userEntity.setRole(userDTO.getRole());
 
+        if (!userDTO.getPassword().equals(userEntity.getPassword())) {
+            userEntity.setPassword(userDTO.getPassword()); // El hashing se debe hacer en el service
+        }
+
     }
 
 }

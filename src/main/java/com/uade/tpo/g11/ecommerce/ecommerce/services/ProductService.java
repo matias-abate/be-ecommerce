@@ -3,13 +3,16 @@ package com.uade.tpo.g11.ecommerce.ecommerce.services;
 import com.uade.tpo.g11.ecommerce.ecommerce.dtos.ProductDTO;
 import com.uade.tpo.g11.ecommerce.ecommerce.entities.OrderDetailEntity;
 import com.uade.tpo.g11.ecommerce.ecommerce.entities.ProductEntity;
+import com.uade.tpo.g11.ecommerce.ecommerce.entities.RoleEntity;
 import com.uade.tpo.g11.ecommerce.ecommerce.entities.UserEntity;
+import com.uade.tpo.g11.ecommerce.ecommerce.exceptions.ProductNotFoundException;
 import com.uade.tpo.g11.ecommerce.ecommerce.exceptions.ResourceNotFoundException;
 
 import com.uade.tpo.g11.ecommerce.ecommerce.mappers.OrderDetailMapper;
 import com.uade.tpo.g11.ecommerce.ecommerce.mappers.ProductMapper;
 import com.uade.tpo.g11.ecommerce.ecommerce.repositories.IProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,6 +32,9 @@ public class ProductService {
     @Autowired
     OrderDetailMapper orderDetailMapper;
 
+    @Autowired
+    AuthenticationService authenticationService;
+
     // READ ALL
     public List<ProductDTO> getAllProducts() {
         List<ProductEntity> productsEntity = productRepository.findAll();
@@ -44,7 +50,7 @@ public class ProductService {
         Optional<ProductEntity> productEntity = productRepository.findById(id);
 
         if (!productEntity.isPresent()) {
-            throw new ResourceNotFoundException("Product not found");
+            throw new ProductNotFoundException("Producto no encontrado");
         } else {
             ProductDTO product = productMapper.toDTO(productEntity.get());
             return product;
@@ -78,6 +84,7 @@ public class ProductService {
 
     // CREATE
     public ProductDTO createProduct(ProductDTO productDTO) {
+
         ProductEntity productEntity = productMapper.toEntity(productDTO);
        // if (productEntity.isFeatured() == null) {
          //   productEntity.isFeatured(false);
@@ -88,6 +95,7 @@ public class ProductService {
     }
 
     // UPDATE
+    // UPDATE
     public ProductDTO updateProduct(int id, ProductDTO productDTO) {
         ProductEntity existingProduct = productRepository.findById(productDTO.getId()).orElse(null);
         productMapper.updateEntityFromDTO(productDTO, existingProduct);
@@ -97,9 +105,6 @@ public class ProductService {
             ProductEntity updatedProduct = productRepository.save(existingProduct);
             return productMapper.toDTO(updatedProduct);
         }
-
-
-
     }
 
 //        productEntity.setProductId(productDTO.getId());
