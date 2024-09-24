@@ -5,6 +5,7 @@ import com.uade.tpo.g11.ecommerce.ecommerce.dtos.OrderDTO;
 import com.uade.tpo.g11.ecommerce.ecommerce.dtos.OrderDetailDTO;
 import com.uade.tpo.g11.ecommerce.ecommerce.entities.*;
 import com.uade.tpo.g11.ecommerce.ecommerce.exceptions.BadRequestException;
+import com.uade.tpo.g11.ecommerce.ecommerce.exceptions.CartNotFoundException;
 import com.uade.tpo.g11.ecommerce.ecommerce.mappers.CartMapper;
 import com.uade.tpo.g11.ecommerce.ecommerce.mappers.OrderMapper;
 import com.uade.tpo.g11.ecommerce.ecommerce.repositories.*;
@@ -70,7 +71,7 @@ public class CartService {
 
     public CartDTO getCartById(Integer id){
         CartEntity cart = cartRepository.findByUser_UserId(id)
-                .orElseThrow(() -> new RuntimeException("Cart not found"));
+                .orElseThrow(() -> new CartNotFoundException("Carrito no encontrado"));
         return cartMapper.toDTO(cart);
     }
 
