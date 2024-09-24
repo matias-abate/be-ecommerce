@@ -67,7 +67,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/transactions")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public ResponseEntity<List<TransactionEntity>> getUserTransactions(@PathVariable Integer userId) {
         List<TransactionEntity> transactions = transactionService.getTransactionsByUserId(userId);
         return ResponseEntity.ok(transactions);
