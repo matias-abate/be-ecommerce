@@ -83,21 +83,21 @@ CREATE TABLE IF NOT EXISTS cartItem(
 
 INSERT INTO users (username, password, email, birth_date, firstname, lastname, role)
 VALUES
-    ('juanperez', 'juanperez_password', 'juanperez@example.com', '1985-01-15', 'Juan', 'Pérez', 'customer'),
-    ('mariafernandez', 'mariafernandez_password', 'mariafernandez@example.com', '1992-03-22', 'María', 'Fernández', 'admin'),
-    ('pedrolopez', 'pedrolopez_password', 'pedrolopez@example.com', '1988-07-30', 'Pedro', 'López', 'customer'),
-    ('luisaortiz', 'luisaortiz_password', 'luisaortiz@example.com', '1990-11-05', 'Luisa', 'Ortiz', 'customer'),
-    ('josegarcia', 'josegarcia_password', 'josegarcia@example.com', '1987-09-12', 'José', 'García', 'admin'),
-    ('anaquezada', 'anaquezada_password', 'anaquezada@example.com', '1995-02-18', 'Ana', 'Quezada', 'customer'),
-    ('franciscogomez', 'franciscogomez_password', 'franciscogomez@example.com', '1989-12-25', 'Francisco', 'Gómez', 'admin'),
-    ('sofiareyes', 'sofiareyes_password', 'sofiareyes@example.com', '1994-04-27', 'Sofía', 'Reyes', 'customer'),
-    ('carlosmedina', 'carlosmedina_password', 'carlosmedina@example.com', '1991-06-08', 'Carlos', 'Medina', 'customer'),
-    ('veronicaflores', 'veronicaflores_password', 'veronicaflores@example.com', '1986-08-16', 'Verónica', 'Flores', 'admin'),
-    ('manuelmorales', 'manuelmorales_password', 'manuelmorales@example.com', '1982-10-10', 'Manuel', 'Morales', 'customer'),
-    ('camilagutierrez', 'camilagutierrez_password', 'camilagutierrez@example.com', '1993-05-03', 'Camila', 'Gutiérrez', 'customer'),
-    ('alejandrocastro', 'alejandrocastro_password', 'alejandrocastro@example.com', '1984-07-14', 'Alejandro', 'Castro', 'admin'),
-    ('patriciajimenez', 'patriciajimenez_password', 'patriciajimenez@example.com', '1989-12-01', 'Patricia', 'Jiménez', 'customer'),
-    ('nicolashernandez', 'nicolashernandez_password', 'nicolashernandez@example.com', '1990-02-20', 'Nicolás', 'Hernández', 'customer');
+    ('juanperez', 'juanperez_password', 'juanperez@example.com', '1985-01-15', 'Juan', 'Pérez', 'USER'),
+    ('mariafernandez', 'mariafernandez_password', 'mariafernandez@example.com', '1992-03-22', 'María', 'Fernández', 'ADMIN'),
+    ('pedrolopez', 'pedrolopez_password', 'pedrolopez@example.com', '1988-07-30', 'Pedro', 'López', 'USER'),
+    ('luisaortiz', 'luisaortiz_password', 'luisaortiz@example.com', '1990-11-05', 'Luisa', 'Ortiz', 'USER'),
+    ('josegarcia', 'josegarcia_password', 'josegarcia@example.com', '1987-09-12', 'José', 'García', 'ADMIN'),
+    ('anaquezada', 'anaquezada_password', 'anaquezada@example.com', '1995-02-18', 'Ana', 'Quezada', 'USER'),
+    ('franciscogomez', 'franciscogomez_password', 'franciscogomez@example.com', '1989-12-25', 'Francisco', 'Gómez', 'ADMIN'),
+    ('sofiareyes', 'sofiareyes_password', 'sofiareyes@example.com', '1994-04-27', 'Sofía', 'Reyes', 'USER'),
+    ('carlosmedina', 'carlosmedina_password', 'carlosmedina@example.com', '1991-06-08', 'Carlos', 'Medina', 'ADMIN'),
+    ('veronicaflores', 'veronicaflores_password', 'veronicaflores@example.com', '1986-08-16', 'Verónica', 'Flores', 'ADMIN'),
+    ('manuelmorales', 'manuelmorales_password', 'manuelmorales@example.com', '1982-10-10', 'Manuel', 'Morales', 'USER'),
+    ('camilagutierrez', 'camilagutierrez_password', 'camilagutierrez@example.com', '1993-05-03', 'Camila', 'Gutiérrez', 'USER'),
+    ('alejandrocastro', 'alejandrocastro_password', 'alejandrocastro@example.com', '1984-07-14', 'Alejandro', 'Castro', 'ADMIN'),
+    ('patriciajimenez', 'patriciajimenez_password', 'patriciajimenez@example.com', '1989-12-01', 'Patricia', 'Jiménez', 'USER'),
+    ('nicolashernandez', 'nicolashernandez_password', 'nicolashernandez@example.com', '1990-02-20', 'Nicolás', 'Hernández', 'ADMIN');
 
 -- 3.1) PRODUCTS
 INSERT INTO products (name, description, images, price, stock, category, is_featured)
