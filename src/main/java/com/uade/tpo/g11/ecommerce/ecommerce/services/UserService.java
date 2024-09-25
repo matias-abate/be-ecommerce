@@ -1,7 +1,9 @@
 package com.uade.tpo.g11.ecommerce.ecommerce.services;
 
 import com.uade.tpo.g11.ecommerce.ecommerce.dtos.UserDTO;
+import com.uade.tpo.g11.ecommerce.ecommerce.entities.RoleEntity;
 import com.uade.tpo.g11.ecommerce.ecommerce.entities.UserEntity;
+import com.uade.tpo.g11.ecommerce.ecommerce.exceptions.UserNotFoundException;
 import com.uade.tpo.g11.ecommerce.ecommerce.mappers.UserMapper;
 import com.uade.tpo.g11.ecommerce.ecommerce.repositories.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,18 +24,23 @@ public class UserService {
     UserMapper userMapper;
 
     // READ
-    public List<UserDTO> getAllUsers() {
-        List<UserEntity> usersEntities = (List<UserEntity>) userRepository.findAll();
+    // READ - Obtener solo usuarios con rol ADMIN
+    public List<UserDTO> getAllAdminUsers() {
+        List<UserEntity> adminEntities = userRepository.findByRole(RoleEntity.ADMIN);
+        if (adminEntities.isEmpty()) {
+            throw new UserNotFoundException("No se encontraron usuarios con rol ADMIN");
+        }
 
-        List<UserDTO> userDTOs = usersEntities.stream()
+        List<UserDTO> adminDTOs = adminEntities.stream()
                 .map(userMapper::toDTO)
                 .collect(Collectors.toList());
 
-        return userDTOs;
-
+        return adminDTOs;
     }
 
+
     public UserDTO getUserById(int id) {
+
         UserDTO userDTO = null;
         Optional<UserEntity> userEntity = userRepository.findById(id);
 

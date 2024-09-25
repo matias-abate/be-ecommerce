@@ -18,13 +18,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         ErrorMessage errorMessage = new ErrorMessage(ex.getMessage(), HttpStatus.NOT_FOUND.value());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
     }
-public class GenericException extends HibernateException {
-    private final Exception exception;
-
-    public GenericException(String message, Exception e) {
-        super(message);
-        this.exception = e;
-    }
 
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<String> handleAccessDeniedException(AccessDeniedException ex) {
@@ -32,6 +25,23 @@ public class GenericException extends HibernateException {
                 .status(HttpStatus.FORBIDDEN)
                 .body("No tienes permiso para acceder a este recurso");
     }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ErrorMessage> handleUserNotFoundException(UserNotFoundException ex) {
+        ErrorMessage errorMessage = new ErrorMessage(ex.getMessage(), HttpStatus.NOT_FOUND.value());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
+    }
+
+
+    public class GenericException extends HibernateException {
+    private final Exception exception;
+
+    public GenericException(String message, Exception e) {
+        super(message);
+        this.exception = e;
+    }
+
+
 
     public String getMessage() {
         return exception.getMessage();

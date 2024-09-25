@@ -24,15 +24,14 @@ public class UserController {
     TransactionService transactionService;
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public ResponseEntity<List<UserDTO>> getAllUsers() {
-        List<UserDTO> users = userService.getAllUsers();
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<List<UserDTO>> getAllAdminUsers() {
+        List<UserDTO> users = userService.getAllAdminUsers();
         return ResponseEntity.ok(users);
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<UserDTO> getUserById(@PathVariable int id) {
         UserDTO user = userService.getUserById(id);
         return ResponseEntity.ok(user);
