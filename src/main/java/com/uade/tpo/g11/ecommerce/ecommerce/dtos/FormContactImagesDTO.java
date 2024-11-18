@@ -6,7 +6,7 @@ public class FormContactImagesDTO {
 
     private int id; // ID de la imagen
     private int formContactId; // ID del formulario asociado
-    private byte[] imagen; // Datos de la imagen
+    private byte[] imagen;
 
     // Getters y Setters
     public int getId() {
