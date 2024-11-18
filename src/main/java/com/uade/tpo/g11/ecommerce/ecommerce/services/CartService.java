@@ -71,7 +71,7 @@ public class CartService {
 
     public CartDTO getCartById(Integer id){
         CartEntity cart = cartRepository.findByUser_UserId(id)
-                .orElseThrow(() -> new CartNotFoundException("Carrito no encontrado"));
+                .orElseThrow(() -> new CartNotFoundException("Carrito no encontrado para el usuario con id: " + id));
         return cartMapper.toDTO(cart);
     }
 
@@ -125,7 +125,7 @@ public class CartService {
     //vaciar carrito
     public CartDTO clearCart(Integer userId) {
         CartEntity cart = cartRepository.findByUser_UserId(userId)
-                .orElseThrow(() -> new RuntimeException("Carrito no encontrado para el usuario con ID: " + userId));
+                .orElseThrow(() -> new CartNotFoundException("Carrito no encontrado para el usuario con ID: " + userId));
 
         cartItemRepository.deleteAll(cart.getCartItems());
         cart.getCartItems().clear();
