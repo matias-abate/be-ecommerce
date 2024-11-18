@@ -3,6 +3,7 @@ package com.uade.tpo.g11.ecommerce.ecommerce.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import java.util.List;
 import java.util.ArrayList;
@@ -18,10 +19,12 @@ public class FormContactEntity {
 
     @Column(name = "nombre", nullable = false)
     @NotEmpty(message = "El nombre es obligatorio")
+    @Size(min = 2, max = 50, message = "El nombre debe tener entre 2 y 50 caracteres.")
     private String nombre;
 
     @Column(name = "apellido", nullable = false)
     @NotEmpty(message = "El apellido es obligatorio")
+        @Size(min = 2, max = 50, message = "El nombre debe tener entre 2 y 50 caracteres.")
     private String apellido;
     
     @Column(name = "descripcion", length = 1000)
@@ -30,6 +33,7 @@ public class FormContactEntity {
 
     @Column(name = "problematica", nullable = false)
     @NotEmpty(message = "La problemática es obligatoria")
+    @Size(min = 2, max = 255, message = "El nombre debe tener entre 2 y 255 caracteres.")
     private String problematica;
 
     

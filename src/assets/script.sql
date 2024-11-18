@@ -1,7 +1,7 @@
 CREATE TABLE FormContact (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(255) NOT NULL,
-    apellido VARCHAR(255) NOT NULL,
+    nombre VARCHAR(50) NOT NULL,
+    apellido VARCHAR(50) NOT NULL,
     descripcion TEXT NOT NULL,
     problematica VARCHAR(255) NOT NULL
 );
