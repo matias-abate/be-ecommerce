@@ -90,5 +90,17 @@ public class FormContactEntity {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
+
+    @Override
+public String toString() {
+    return "FormContactEntity{" +
+           "id=" + id +
+           ", nombre='" + nombre + '\'' +
+           ", apellido='" + apellido + '\'' +
+           ", problematica='" + problematica + '\'' +
+           ", descripcion='" + descripcion + '\'' +
+           '}';
+}
+
 }
 
