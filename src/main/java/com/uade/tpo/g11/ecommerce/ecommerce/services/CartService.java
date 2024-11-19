@@ -10,6 +10,7 @@ import com.uade.tpo.g11.ecommerce.ecommerce.mappers.CartMapper;
 import com.uade.tpo.g11.ecommerce.ecommerce.mappers.OrderMapper;
 import com.uade.tpo.g11.ecommerce.ecommerce.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +23,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class CartService {
-
     @Autowired
     ICartRepository cartRepository;
 
@@ -54,6 +54,9 @@ public class CartService {
     private UserService userService;
 
     @Autowired
+    private AuthenticationService authenticationService;
+
+    @Autowired
     public CartService(ICartRepository cartRepository) {
         this.cartRepository = cartRepository;
     }
@@ -70,6 +73,12 @@ public class CartService {
 
 
     public CartDTO getCartById(Integer id){
+        UserEntity loggedUser = authenticationService.getAuthenticatedUser();
+
+        if (!loggedUser.getUserId().equals(id)) {
+            throw new AccessDeniedException("No tienes permiso para vaciar el carrito de otro usuario.");
+        }
+
         CartEntity cart = cartRepository.findByUser_UserId(id)
                 .orElseThrow(() -> new CartNotFoundException("Carrito no encontrado para el usuario con id: " + id));
         return cartMapper.toDTO(cart);
@@ -124,10 +133,16 @@ public class CartService {
 
     //vaciar carrito
     public CartDTO clearCart(Integer userId) {
+        UserEntity loggedUser = authenticationService.getAuthenticatedUser();
+
+        if (!loggedUser.getUserId().equals(userId)) {
+            throw new AccessDeniedException("No tienes permiso para vaciar el carrito de otro usuario.");
+        }
+
         CartEntity cart = cartRepository.findByUser_UserId(userId)
                 .orElseThrow(() -> new CartNotFoundException("Carrito no encontrado para el usuario con ID: " + userId));
 
-        cartItemRepository.deleteAll(cart.getCartItems());
+        //cartItemRepository.deleteAll(cart.getCartItems());
         cart.getCartItems().clear();
 
         cartRepository.save(cart);
@@ -136,7 +151,12 @@ public class CartService {
 
     //Eliminar un producto del carrito
     public CartDTO removeProductFromCart(Integer userId, Integer productId) {
-        // Buscar el carrito del usuario
+        UserEntity loggedUser = authenticationService.getAuthenticatedUser();
+
+        if (!loggedUser.getUserId().equals(userId)) {
+            throw new AccessDeniedException("No tienes permiso para vaciar el carrito de otro usuario.");
+        }
+
         CartEntity cart = cartRepository.findByUser_UserId(userId)
                 .orElseThrow(() -> new RuntimeException("Carrito no encontrado para el usuario con ID: " + userId));
 
@@ -162,6 +182,8 @@ public class CartService {
     //checkout del carrito
     @Transactional
     public OrderDTO checkoutCart(Integer userId) {
+
+
         // Buscar el carrito del usuario
         CartEntity cart = cartRepository.findByUser_UserId(userId)
                 .orElseThrow(() -> new RuntimeException("Carrito no encontrado para el usuario con ID: " + userId));
