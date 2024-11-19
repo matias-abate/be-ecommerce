@@ -29,7 +29,7 @@ public class FormContactController {
         @RequestParam("imagenes") List<MultipartFile> imagenes
     ){
     try {
-        // Convertir las imágenes a bytes y validar tamaño
+        // Convertir las imágenes a bytes
         List<byte[]> imagenesBytes = imagenes.stream()
                 .map(imagen -> {
                 try {
@@ -58,10 +58,11 @@ public class FormContactController {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(new ApiResponseDTO(e.getMessage(), null));
-    } catch (Exception e) {
-        return ResponseEntity
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ApiResponseDTO("Ocurrió un error inesperado.", null));
-    }
+    }  catch (Exception e) {
+        e.printStackTrace();
+    return ResponseEntity
+            .status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body(new ApiResponseDTO("Ocurrió un error inesperado.", null));
+}
  }
 }

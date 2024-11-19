@@ -45,4 +45,13 @@ public class FormContactImagesEntity {
     public void setImagen(byte[] imagen) {
         this.imagen = imagen;
     }
+
+@Override
+public String toString() {
+    return "FormContactImagesEntity{" +
+           "id=" + id +
+           ", formContactId=" + (formContact != null ? formContact.getId() : null) +
+           ", imagenSize=" + (imagen != null ? imagen.length : 0) +
+           '}';
+}
 }

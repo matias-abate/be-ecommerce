@@ -7,6 +7,7 @@ import com.uade.tpo.g11.ecommerce.ecommerce.repositories.IFormContactImagesRepos
 import com.uade.tpo.g11.ecommerce.ecommerce.dtos.FormContactDTO;
 import com.uade.tpo.g11.ecommerce.ecommerce.entities.FormContactEntity;
 import com.uade.tpo.g11.ecommerce.ecommerce.entities.FormContactImagesEntity;
+import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,22 +21,25 @@ public class FormContactService {
     @Autowired
     IFormContactImagesRepository FormContactImagesRepository;
 
+    @Transactional
     public FormContactDTO createFormContact(FormContactDTO FormContactDTO, List<byte[]> imagenes) throws IOException {
-        // Crear y guardar el formulario
+        // Creo y guardo el formulario
         FormContactEntity FormContactEntity = new FormContactEntity();
         FormContactEntity.setNombre(FormContactDTO.getNombre());
         FormContactEntity.setApellido(FormContactDTO.getApellido());
         FormContactEntity.setProblematica(FormContactDTO.getProblematica());
         FormContactEntity.setDescripcion(FormContactDTO.getDescripcion());
 
-        FormContactEntity = FormContactRepository.save(FormContactEntity);
+        FormContactEntity = FormContactRepository.saveAndFlush(FormContactEntity);
+        System.out.println("Formulario: " + FormContactEntity);
 
         // Guardar las imágenes asociadas
         if (imagenes != null && !imagenes.isEmpty()) {
             for (byte[] imagenBytes : imagenes) {
                 FormContactImagesEntity imagenEntity = new FormContactImagesEntity();
-                imagenEntity.setFormContact(FormContactEntity); // Relación con el formulario
+                imagenEntity.setFormContact(FormContactEntity); 
                 imagenEntity.setImagen(imagenBytes);
+                System.out.println("Guardando imagen: " + imagenEntity);
                 FormContactImagesRepository.save(imagenEntity);
             }
         }
