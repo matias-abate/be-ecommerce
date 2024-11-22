@@ -60,7 +60,7 @@ public class AuthenticationService {
         // Retornar la respuesta de autenticación con el token generado
         return AuthenticationResponse.builder()
                 .accessToken(jwtToken)
-                .message("El usuario fue creado exitosamente.")
+                //.message("El usuario fue creado exitosamente.")
                 .build();
     }
     public LoginResponseDTO login(LoginRequestDTO request) {
@@ -95,11 +95,15 @@ public class AuthenticationService {
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
                         request.getPassword()));
+
         var user = repository.findByEmail(request.getEmail())
                 .orElseThrow();
+
         var jwtToken = jwtService.generateToken(user);
+
         return AuthenticationResponse.builder()
                 .accessToken(jwtToken)
+                .userId(user.getUserId())
                 .build();
     }
 

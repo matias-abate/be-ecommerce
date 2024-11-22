@@ -26,7 +26,7 @@ public class UserService {
     // READ
     // READ - Obtener solo usuarios con rol ADMIN
     public List<UserDTO> getAllAdminUsers() {
-        List<UserEntity> adminEntities = userRepository.findByRole(RoleEntity.ADMIN);
+        List<UserEntity> adminEntities = userRepository.findByRole(RoleEntity.USER);
         if (adminEntities.isEmpty()) {
             throw new UserNotFoundException("No se encontraron usuarios con rol ADMIN");
         }
