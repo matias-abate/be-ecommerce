@@ -7,5 +7,6 @@ import lombok.Data;
 @Builder
 public class LoginResponseDTO {
     private String token;
+    private int id;
     private Long expiresIn;
 }
