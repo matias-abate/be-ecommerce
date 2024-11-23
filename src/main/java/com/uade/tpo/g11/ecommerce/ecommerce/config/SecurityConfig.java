@@ -38,6 +38,7 @@ public class SecurityConfig {
                         .requestMatchers("/transactions/**").permitAll()
                         .requestMatchers("/orderdetails/**").permitAll()
                         .requestMatchers("/api/formulario/**").permitAll()
+                        .requestMatchers("/products/**").permitAll()
                         .anyRequest()
                         .authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
