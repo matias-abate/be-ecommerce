@@ -1,6 +1,8 @@
 package com.uade.tpo.g11.ecommerce.ecommerce.services;
 
+import com.uade.tpo.g11.ecommerce.ecommerce.dtos.ProductDTO;
 import com.uade.tpo.g11.ecommerce.ecommerce.dtos.UserDTO;
+import com.uade.tpo.g11.ecommerce.ecommerce.entities.ProductEntity;
 import com.uade.tpo.g11.ecommerce.ecommerce.entities.RoleEntity;
 import com.uade.tpo.g11.ecommerce.ecommerce.entities.UserEntity;
 import com.uade.tpo.g11.ecommerce.ecommerce.exceptions.UserNotFoundException;
@@ -25,18 +27,19 @@ public class UserService {
 
     // READ
     // READ - Obtener solo usuarios con rol ADMIN
-    public List<UserDTO> getAllAdminUsers() {
-        List<UserEntity> adminEntities = userRepository.findByRole(RoleEntity.USER);
-        if (adminEntities.isEmpty()) {
-            throw new UserNotFoundException("No se encontraron usuarios con rol ADMIN");
+    public List<UserDTO> getAllUsers() {
+        List<UserEntity> userEntities = (List<UserEntity>) userRepository.findAll();
+        if (userEntities.isEmpty()) {
+            throw new UserNotFoundException("No se encontraron usuarios");
         }
 
-        List<UserDTO> adminDTOs = adminEntities.stream()
+        List<UserDTO> userDTOs = userEntities.stream()
                 .map(userMapper::toDTO)
                 .collect(Collectors.toList());
 
-        return adminDTOs;
+        return userDTOs;
     }
+
 
 
     public UserDTO getUserById(int id) {

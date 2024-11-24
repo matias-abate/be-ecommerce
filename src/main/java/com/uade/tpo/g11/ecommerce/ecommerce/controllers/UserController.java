@@ -24,9 +24,9 @@ public class UserController {
     TransactionService transactionService;
 
     @GetMapping
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<List<UserDTO>> getAllAdminUsers() {
-        List<UserDTO> users = userService.getAllAdminUsers();
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
+        List<UserDTO> users = userService.getAllUsers();
         return ResponseEntity.ok(users);
     }
 

@@ -131,6 +131,39 @@ public class CartService {
         return cartMapper.toDTO(cart); // Devuelve el carrito actualizado como CartDTO
     }
 
+    /*public void updateQuantity(Integer userId, int productId, int quantity) {
+        UserEntity user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        ProductEntity product = productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+        // Obtener el carrito del usuario
+        Cart cart = cartRepository.findByUserId(userId);
+        if (cart == null) {
+            throw new CartNotFoundException("Carrito no encontrado para el usuario.");
+        }
+
+        // Buscar el cartItem con el productId
+        CartItem cartItem = cartItemRepository.findByCartIdAndProductId(cart.getId(), productId);
+        if (cartItem == null) {
+            throw new ProductNotFoundException("Producto no encontrado en el carrito.");
+        }
+
+        // Actualizar la cantidad
+        cartItem.setQuantity(quantity);
+        cartItemRepository.save(cartItem);
+
+        // Actualizar el JSON de los items del carrito del usuario
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("Usuario no encontrado"));
+        user.getCart().getItems().stream()
+                .filter(item -> item.getProductId().equals(productId))
+                .forEach(item -> item.setQuantity(quantity));
+
+        userRepository.save(user);
+    }
+}*/
+
     //vaciar carrito
     public CartDTO clearCart(Integer userId) {
         UserEntity loggedUser = authenticationService.getAuthenticatedUser();
