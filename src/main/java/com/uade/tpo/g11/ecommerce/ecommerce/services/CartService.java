@@ -199,9 +199,6 @@ public class CartService {
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado en el carrito"));
 
         if (cartItem.getQuantity() > 1) {
-            cartItem.setQuantity(cartItem.getQuantity() - 1);
-            cartItemRepository.save(cartItem); // Guardar cambios
-        } else {
             cart.getCartItems().remove(cartItem);
             cartItemRepository.delete(cartItem); // Eliminar si la cantidad es 1
         }

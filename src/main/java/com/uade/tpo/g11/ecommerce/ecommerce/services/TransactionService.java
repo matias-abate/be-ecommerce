@@ -39,11 +39,15 @@ public class TransactionService {
     }
 
     // GET BY ID
-    public TransactionDTO getTransactionById(int id) {
-        TransactionEntity transactionEntity = transactionRepository.findById(id).orElse(null);
-        TransactionDTO transactionDTO = transactionMapper.toDTO(transactionEntity);
+    public List<TransactionDTO> getTransactionById(int id) {
+        List<TransactionEntity> transactionEntity = transactionRepository.findAllByUserId(id);
+        //TransactionDTO transactionDTO = transactionMapper.toDTO(transactionEntity);
+        List<TransactionDTO> transactions = transactionEntity.stream()
+                .map(transactionMapper::toDTO)
+                .collect(Collectors.toList());
 
-        return transactionDTO;
+
+        return transactions;
     }
 
     // CREATE
