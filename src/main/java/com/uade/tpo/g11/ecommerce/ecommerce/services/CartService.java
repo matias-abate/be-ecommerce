@@ -6,6 +6,8 @@ import com.uade.tpo.g11.ecommerce.ecommerce.dtos.OrderDetailDTO;
 import com.uade.tpo.g11.ecommerce.ecommerce.entities.*;
 import com.uade.tpo.g11.ecommerce.ecommerce.exceptions.BadRequestException;
 import com.uade.tpo.g11.ecommerce.ecommerce.exceptions.CartNotFoundException;
+import com.uade.tpo.g11.ecommerce.ecommerce.exceptions.ProductNotFoundException;
+import com.uade.tpo.g11.ecommerce.ecommerce.exceptions.UserNotFoundException;
 import com.uade.tpo.g11.ecommerce.ecommerce.mappers.CartMapper;
 import com.uade.tpo.g11.ecommerce.ecommerce.mappers.OrderMapper;
 import com.uade.tpo.g11.ecommerce.ecommerce.repositories.*;
@@ -131,21 +133,17 @@ public class CartService {
         return cartMapper.toDTO(cart); // Devuelve el carrito actualizado como CartDTO
     }
 
-    /*public void updateQuantity(Integer userId, int productId, int quantity) {
-        UserEntity user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        ProductEntity product = productRepository.findById(productId)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
-
+    public void updateQuantity(Integer userId, int productId, int quantity) {
         // Obtener el carrito del usuario
-        Cart cart = cartRepository.findByUserId(userId);
+        CartEntity cart = cartRepository.findByUser_UserId(userId)
+                .orElseThrow(() -> new CartNotFoundException("Carrito no encontrado para el usuario con ID: " + userId));
+
         if (cart == null) {
             throw new CartNotFoundException("Carrito no encontrado para el usuario.");
         }
 
         // Buscar el cartItem con el productId
-        CartItem cartItem = cartItemRepository.findByCartIdAndProductId(cart.getId(), productId);
+        CartItemEntity cartItem = cartItemRepository.findByCart_CartIdAndProduct_ProductId(cart.getCartId(), productId);
         if (cartItem == null) {
             throw new ProductNotFoundException("Producto no encontrado en el carrito.");
         }
@@ -155,14 +153,15 @@ public class CartService {
         cartItemRepository.save(cartItem);
 
         // Actualizar el JSON de los items del carrito del usuario
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("Usuario no encontrado"));
-        user.getCart().getItems().stream()
-                .filter(item -> item.getProductId().equals(productId))
+        UserEntity user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("Usuario no encontrado"));
+        user.getCart().getCartItems().stream()
+                .filter(item -> item.getProduct().equals(productId))
                 .forEach(item -> item.setQuantity(quantity));
 
         userRepository.save(user);
+
     }
-}*/
+
 
     //vaciar carrito
     public CartDTO clearCart(Integer userId) {
