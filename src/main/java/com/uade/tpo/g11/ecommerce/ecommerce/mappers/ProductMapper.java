@@ -38,6 +38,7 @@ public class ProductMapper {
 
         productDTO.setOrderDetails(orderDetailsDTO);
         productDTO.setFeatured(productEntity.isFeatured());
+        productDTO.setVisto(productEntity.isVisto());
 
         return productDTO;
 
@@ -60,6 +61,7 @@ public class ProductMapper {
                     .collect(Collectors.toList());
             productEntity.setOrderDetails(orderDetailEntities);
             productEntity.setFeatured(productDTO.isFeatured());
+            productEntity.setVisto(productDTO.isVisto());
 
             return productEntity;
     }
@@ -78,6 +80,7 @@ public class ProductMapper {
                         .collect(Collectors.toList());
 
         productEntity.setOrderDetails(orderDetails);
+        productEntity.setVisto(productDTO.isFeatured());
 
 
     }

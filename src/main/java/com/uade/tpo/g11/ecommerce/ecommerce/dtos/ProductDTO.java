@@ -16,6 +16,7 @@ public class ProductDTO {
     private String category;
     private List<OrderDetailDTO> orderDetails;
     private boolean isFeatured;
+    private boolean isVisto;
 
 
 }

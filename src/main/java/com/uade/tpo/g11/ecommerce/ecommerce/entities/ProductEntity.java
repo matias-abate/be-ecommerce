@@ -43,5 +43,8 @@ public class ProductEntity {
     @Column(name = "isFeatured", nullable = false)
     private boolean isFeatured;
 
+    @Column(name = "isVisto", nullable = false)
+    private boolean isVisto;
+
 
 }
