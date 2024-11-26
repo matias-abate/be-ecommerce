@@ -21,5 +21,6 @@ public class WishlistItemEntity {
     @JoinColumn(name = "product_id", referencedColumnName = "product_id", nullable = false)
     private ProductEntity product;
 
+
     // Getters y Setters
 }

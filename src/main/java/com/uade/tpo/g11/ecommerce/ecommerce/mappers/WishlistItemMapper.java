@@ -34,8 +34,10 @@ public class WishlistItemMapper {
         // ID Setter
         wishlistItemDTO.setWishlistItemId(wishlistItemEntity.getWishlistItemId());
 
-        // Product Setter - Usa directamente la relación existente
-        wishlistItemDTO.setProduct(productMapper.toDTO(wishlistItemEntity.getProduct()));
+        ProductEntity productEntity = productRepository.findById(wishlistItemEntity.getProduct().getProductId()).orElseThrow(
+                () -> new RuntimeException("Product not found at @WishlistItemMapper")
+        );
+        wishlistItemDTO.setProduct(productMapper.toDTO(productEntity));
 
         return wishlistItemDTO;
     }
