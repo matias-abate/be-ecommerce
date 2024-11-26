@@ -29,6 +29,7 @@ public class ProductMapper {
         productDTO.setStock(productEntity.getStock());
         productDTO.setCategory(productEntity.getCategory());
         productDTO.setFeatured(productEntity.isFeatured());
+        productDTO.setVisto(productEntity.isVisto());
 
         List<OrderDetailDTO> orderDetailsDTO = productEntity.getOrderDetails().stream()
                 .map(orderDetailMapper::toDTO)
@@ -49,6 +50,7 @@ public class ProductMapper {
         productEntity.setStock(productDTO.getStock());
         productEntity.setCategory(productDTO.getCategory());
         productEntity.setFeatured(productDTO.isFeatured());
+        productEntity.setVisto(productDTO.isVisto());
 
         List<OrderDetailEntity> orderDetailEntities = productDTO.getOrderDetails().stream()
                 .map(orderDetailMapper::toEntity)
@@ -73,6 +75,7 @@ public class ProductMapper {
                         .collect(Collectors.toList());
 
         productEntity.setOrderDetails(orderDetails);
+        productEntity.setVisto(productDTO.isVisto());
 
 
     }
