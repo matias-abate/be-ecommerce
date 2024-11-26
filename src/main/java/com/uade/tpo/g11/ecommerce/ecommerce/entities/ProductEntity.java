@@ -21,9 +21,8 @@ public class ProductEntity {
     @Column(name = "description", length = 500)
     private String description;
 
-    @Lob
-    @Column(name = "images")
-    private byte[] images;
+    @Column(name = "images", length = 500)
+    private String images;
 
     @Column(name = "price", nullable = false)
     private float price;
