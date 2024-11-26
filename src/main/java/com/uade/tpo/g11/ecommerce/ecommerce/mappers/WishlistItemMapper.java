@@ -34,14 +34,12 @@ public class WishlistItemMapper {
         // ID Setter
         wishlistItemDTO.setWishlistItemId(wishlistItemEntity.getWishlistItemId());
 
-        // Product Setter
-        ProductEntity productEntity = productRepository.findById(wishlistItemEntity.getProduct().getProductId()).orElseThrow(
-                () -> new RuntimeException("Product not found at @WishlistItemMapper")
-        );
-        wishlistItemDTO.setProduct(productMapper.toDTO(productEntity));
+        // Product Setter - Usa directamente la relación existente
+        wishlistItemDTO.setProduct(productMapper.toDTO(wishlistItemEntity.getProduct()));
 
         return wishlistItemDTO;
     }
+
 
     public WishlistItemEntity toEntity(WishlistItemDTO wishlistItemDTO) {
         WishlistItemEntity wishlistItemEntity = new WishlistItemEntity();
@@ -49,10 +47,11 @@ public class WishlistItemMapper {
         // ID Setter
         wishlistItemEntity.setWishlistItemId(wishlistItemDTO.getWishlistItemId());
 
-        // Product Setter
+        // Product Setter - Usa directamente el producto mapeado
         wishlistItemEntity.setProduct(productMapper.toEntity(wishlistItemDTO.getProduct()));
 
         return wishlistItemEntity;
     }
+
 
 }

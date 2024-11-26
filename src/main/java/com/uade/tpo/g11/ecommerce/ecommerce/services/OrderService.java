@@ -91,4 +91,11 @@ public class OrderService {
         orderRepository.delete(orderEntity);
     }
 
+    public List<OrderDTO> getOrdersByUserId(int userId) {
+        List<OrderEntity> ordersEntity = orderRepository.findByUser_UserId(userId);
+        return ordersEntity.stream()
+                .map(orderMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
 }

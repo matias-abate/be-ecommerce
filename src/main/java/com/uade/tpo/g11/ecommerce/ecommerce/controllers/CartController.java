@@ -47,6 +47,11 @@ public class CartController {
         return ResponseEntity.ok(response);
     }
 
+    @PutMapping("/updateQuantity")
+    public void updateQuantity(@RequestParam int userId, @RequestParam  int productId, @RequestParam int quantity) {
+            cartService.updateQuantity(userId, productId, quantity);
+          }
+
     //Eliminar un producto del carrito
     @DeleteMapping("/{userId}/items/{productId}")
     public ResponseEntity<CartDTO> removeProductFromCart(

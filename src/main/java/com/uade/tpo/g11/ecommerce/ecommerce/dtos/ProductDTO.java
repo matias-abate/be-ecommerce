@@ -17,6 +17,7 @@ public class ProductDTO {
     private String category;
     private List<OrderDetailDTO> orderDetails = new ArrayList<>();;
     private boolean isFeatured;
+    private boolean isVisto;
 
 
 }
