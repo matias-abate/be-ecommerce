@@ -16,6 +16,7 @@ public interface IUserRepository extends CrudRepository<UserEntity, Integer> {
     boolean existsByEmail(String email);
 
 
+    Optional<UserEntity> findByUsername(String username);
 }
 
     // static boolean existsByEmail(String email) {

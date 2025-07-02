@@ -43,15 +43,15 @@ public class UserService {
 
 
     public UserDTO getUserById(int id) {
-
-        UserDTO userDTO = null;
         Optional<UserEntity> userEntity = userRepository.findById(id);
 
-        if(userEntity.isPresent()) {
-            userDTO = userMapper.toDTO(userEntity.get());
+        if (userEntity.isPresent()) {
+            System.out.println("Usuario encontrado: " + userEntity.get().getUsername());
+            return userMapper.toDTO(userEntity.get());
+        } else {
+            System.out.println("Usuario NO encontrado con ID: " + id);
+            return null; // o lanzá excepción como te recomendé antes
         }
-
-        return userDTO;
     }
 
     // CREATE
@@ -104,4 +104,19 @@ public class UserService {
         userRepository.delete(user);
     }
 
+    public UserDTO getUserByUsername(String username) {
+        Optional<UserEntity> userEntityOptional = userRepository.findByUsername(username);
+
+        if (userEntityOptional.isPresent()) {
+            return userMapper.toDTO(userEntityOptional.get());
+        } else {
+            throw new UserNotFoundException("Usuario no encontrado con username: " + username);
+        }
+    }
+
+    public UserDTO getUserByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .map(userMapper::toDTO)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con email: " + email));
+    }
 }
