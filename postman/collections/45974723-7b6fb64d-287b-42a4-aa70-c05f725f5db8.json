@@ -29,6 +29,31 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "verga",
+			"id": "45974723-7e4fb610-047b-4a11-8436-f3a519cc7cf8",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://api.telegram.org/bot8275925031:AAERnFScJjIg95eWNuW9_qNgWIs9uBymnFE/deleteWebhook",
+					"protocol": "https",
+					"host": [
+						"api",
+						"telegram",
+						"org"
+					],
+					"path": [
+						"bot8275925031:AAERnFScJjIg95eWNuW9_qNgWIs9uBymnFE",
+						"deleteWebhook"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
