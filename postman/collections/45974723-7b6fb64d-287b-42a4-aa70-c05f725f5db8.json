@@ -37,8 +37,21 @@
 				"disableBodyPruning": true
 			},
 			"request": {
-				"method": "GET",
-				"header": []
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://api.telegram.org/bot8275925031:AAERnFScJjIg95eWNuW9_qNgWIs9uBymnFE/deleteWebhook",
+					"protocol": "https",
+					"host": [
+						"api",
+						"telegram",
+						"org"
+					],
+					"path": [
+						"bot8275925031:AAERnFScJjIg95eWNuW9_qNgWIs9uBymnFE",
+						"deleteWebhook"
+					]
+				}
 			},
 			"response": []
 		}
