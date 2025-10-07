@@ -7,31 +7,6 @@
 	"item": [
 		{
 			"name": "New Request",
-			"id": "45974723-e202e45f-8021-4ec7-b57c-3ce2636537f1",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "POST",
-				"header": [],
-				"url": {
-					"raw": "https://api.telegram.org/bot8275925031:AAERnFScJjIg95eWNuW9_qNgWIs9uBymnFE/deleteWebhook",
-					"protocol": "https",
-					"host": [
-						"api",
-						"telegram",
-						"org"
-					],
-					"path": [
-						"bot8275925031:AAERnFScJjIg95eWNuW9_qNgWIs9uBymnFE",
-						"deleteWebhook"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "New Request",
 			"id": "45974723-8a7d4669-dff7-4a3a-8fb3-27bda8104de2",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
